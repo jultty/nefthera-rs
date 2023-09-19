@@ -14,9 +14,8 @@ fn logger(message: &str, opts: &LoggerOptions) {
     }
 }
 
-fn parse_arguments() -> Arguments {
+fn parse_arguments(log_opts: &mut LoggerOptions) -> Arguments {
     let arguments: Vec<String> = env::args().collect();
-    let mut log_opts = LoggerOptions { debug: false };
 
     let mut return_arguments: Arguments = Arguments { debug: false };
 
@@ -28,14 +27,17 @@ fn parse_arguments() -> Arguments {
 
         let mut log_message = "Read argument ".to_owned();
         log_message.push_str(arg);
-        logger(&log_message, &log_opts);
+        logger(&log_message, log_opts);
     }
 
-    logger("Done reading arguments", &log_opts);
+    logger("Done reading arguments", log_opts);
 
     return_arguments
 }
 
 fn main() {
-    let _arguments = parse_arguments();
+    let mut log_opts = LoggerOptions { debug: false };
+    let _arguments = parse_arguments(&mut log_opts);
+
+    logger("", &log_opts);
 }
