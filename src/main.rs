@@ -1,5 +1,9 @@
 use std::env;
 
+struct Arguments {
+    debug: bool,
+}
+
 struct LoggerOptions {
     debug: bool,
 }
@@ -8,10 +12,6 @@ fn logger(message: &str, opts: &LoggerOptions) {
     if opts.debug {
         println!("{message}");
     }
-}
-
-struct Arguments {
-    debug: bool,
 }
 
 fn parse_arguments() -> Arguments {
@@ -25,6 +25,7 @@ fn parse_arguments() -> Arguments {
             return_arguments.debug = true;
             log_opts.debug = true;
         }
+
         let mut log_message = "Read argument ".to_owned();
         log_message.push_str(arg);
         logger(&log_message, &log_opts);
@@ -32,7 +33,7 @@ fn parse_arguments() -> Arguments {
 
     logger("Done reading arguments", &log_opts);
 
-    return return_arguments;
+    return_arguments
 }
 
 fn main() {

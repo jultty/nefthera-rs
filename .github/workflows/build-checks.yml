@@ -13,11 +13,14 @@ jobs:
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-          components: rustfmt
+          components: rustfmt, clippy
 
 
       - name: Check
         run: cargo check
+
+      - name: Lint
+        run: cargo clippy
 
       - name: Format check
         run: cargo fmt --check
@@ -33,4 +36,7 @@ jobs:
 
       - name: Run
         run: cargo run
+
+      - name: Debug run
+        run: cargo run -- --debug
 
