@@ -1,8 +1,7 @@
 use crate::space::Position;
 
 impl Character {
-    #[allow(dead_code)]
-    fn r#move(&mut self, x: i32, y: i32, z: i32) -> Position {
+    pub fn go(&mut self, x: i32, y: i32, z: i32) -> Position {
         self.position.x += x;
         self.position.y += y;
         self.position.z += z;

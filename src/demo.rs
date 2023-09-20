@@ -1,7 +1,8 @@
 use crate::character::*;
 use crate::space::*;
 
-// TODO Move these character definitions to module lore
+// TODO Move character definitions to lore module
+
 pub fn bertha() -> Character {
     Character {
         name: "Bertha".into(),
