@@ -48,7 +48,7 @@ fn parse_input(input: String) {
 
     match input.as_str() {
         "move" => logger("Action triggered: move", &log_opts),
-        _other => logger("Action triggered: default", &log_opts),
+        _ => logger("Action triggered: default", &log_opts),
     }
 }
 
@@ -58,7 +58,7 @@ fn main() -> io::Result<()> {
 
     if arguments.start {
         loop {
-            logger("Starting main loop per arguments", &log_opts);
+            logger("Main loop started by arguments", &log_opts);
 
             let mut input = String::new();
             match io::stdin().read_line(&mut input) {
@@ -76,4 +76,15 @@ fn main() -> io::Result<()> {
 
     logger("Exiting: End of file", &log_opts);
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn main_returns_ok() {
+        let result = main().expect("Main did not return Ok");
+        assert_eq!(result, ());
+    }
 }
