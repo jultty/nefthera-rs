@@ -1,5 +1,14 @@
 use crate::space::Position;
 
+impl Character {
+    fn r#move(&mut self, x: i32, y: i32, z: i32) -> Position {
+        self.position.x += x;
+        self.position.y += y;
+        self.position.z += z;
+        self.position
+    }
+}
+
 pub struct Character {
     pub name: String,
     pub hp: HP,
