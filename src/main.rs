@@ -52,30 +52,38 @@ fn parse_input(input: &str) -> Result<bool, String> {
     let log_opts = LoggerOptions { debug: false };
 
     match input {
-        "move" => { 
+        "move" => {
             logger("Action triggered: move", None, &log_opts);
-            print("moving")?;
+            print("moving", true)?;
+            Ok(false)
+        }
+        "quit" => {
+            logger("Action triggered: quit", None, &log_opts);
+            print("quitting", true)?;
             Ok(true)
-        },
-        _ => { 
+        }
+        _ => {
             logger("Action triggered: default", None, &log_opts);
-            print("unknown command")?;
-            Ok(true)
-        },
+            print("unknown command", true)?;
+            Ok(false)
+        }
     }
 }
 
-fn print(message: &str) -> Result<bool, String> {
-    write!(std::io::stdout(), "{message}").map_err(|e| e.to_string())?;
+fn print(message: &str, newline: bool) -> Result<bool, String> {
+    if newline {
+        writeln!(std::io::stdout(), "{message}").map_err(|e| e.to_string())?;
+    } else {
+        write!(std::io::stdout(), "{message}").map_err(|e| e.to_string())?;
+    }
     std::io::stdout().flush().map_err(|e| e.to_string())?;
     Ok(true)
 }
 
 // from clap/examples/repl.rs
 fn readline() -> Result<String, String> {
+    print("> ", false)?;
 
-    print("> ")?;
-    
     let mut buffer = String::new();
     std::io::stdin()
         .read_line(&mut buffer)
@@ -88,10 +96,8 @@ fn main() -> Result<(), String> {
     let arguments = parse_arguments(&mut log_opts);
 
     if arguments.start {
-
         logger("Main loop started by start argument", None, &log_opts);
         loop {
-
             let line = readline()?;
             let line = line.trim();
             if line.is_empty() {
@@ -105,13 +111,12 @@ fn main() -> Result<(), String> {
                     }
                 }
                 Err(err) => {
-                    write!(std::io::stdout(), "{err}").map_err(|e| e.to_string())?;
-                    std::io::stdout().flush().map_err(|e| e.to_string())?;
+                    print(&err, true)?;
                 }
             }
         }
 
-        return Ok(())
+        return Ok(());
     }
 
     logger("Exiting: End of file", None, &log_opts);
