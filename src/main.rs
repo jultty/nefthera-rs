@@ -1,4 +1,6 @@
+mod character;
 mod parser;
+mod space;
 mod utils;
 
 use parser::*;
