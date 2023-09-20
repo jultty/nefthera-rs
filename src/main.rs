@@ -10,9 +10,15 @@ struct LoggerOptions {
     debug: bool,
 }
 
-fn logger(message: &str, opts: &LoggerOptions) {
+fn logger(message: &str, variable: Option<&str>, opts: &LoggerOptions) {
     if opts.debug {
-        println!("{message}");
+        let mut output_message = message.to_owned();
+
+        if let Some(s) = variable {
+            output_message.push_str(&format!(" {}", s));
+        }
+
+        println!("{output_message}")
     }
 }
 
@@ -25,20 +31,19 @@ fn parse_arguments(log_opts: &mut LoggerOptions) -> Arguments {
     };
 
     for arg in &arguments {
-        if arg == "--debug" {
-            return_arguments.debug = true;
-            log_opts.debug = true;
-        }
-        if arg == "--start" {
-            return_arguments.start = true;
+        match arg.as_str() {
+            "--debug" => {
+                return_arguments.debug = true;
+                log_opts.debug = true;
+            }
+            "--start" => return_arguments.start = true,
+            _ => logger("Invalid argument", Some(arg), log_opts),
         }
 
-        let mut log_message = "Read argument ".to_owned();
-        log_message.push_str(arg);
-        logger(&log_message, log_opts);
+        logger("Read argument", Some(arg), log_opts);
     }
 
-    logger("Done reading arguments", log_opts);
+    logger("Done reading arguments", None, log_opts);
 
     return_arguments
 }
@@ -47,8 +52,8 @@ fn parse_input(input: String) {
     let log_opts = LoggerOptions { debug: false };
 
     match input.as_str() {
-        "move" => logger("Action triggered: move", &log_opts),
-        _ => logger("Action triggered: default", &log_opts),
+        "move" => logger("Action triggered: move", None, &log_opts),
+        _ => logger("Action triggered: default", None, &log_opts),
     }
 }
 
@@ -58,7 +63,7 @@ fn main() -> io::Result<()> {
 
     if arguments.start {
         loop {
-            logger("Main loop started by arguments", &log_opts);
+            logger("Main loop started by start argument", None, &log_opts);
 
             let mut input = String::new();
             match io::stdin().read_line(&mut input) {
@@ -74,7 +79,7 @@ fn main() -> io::Result<()> {
         }
     }
 
-    logger("Exiting: End of file", &log_opts);
+    logger("Exiting: End of file", None, &log_opts);
     Ok(())
 }
 
