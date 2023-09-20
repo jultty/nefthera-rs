@@ -1,5 +1,5 @@
 use std::env;
-use std::io;
+use std::io::Write;
 
 struct Arguments {
     debug: bool,
@@ -48,35 +48,70 @@ fn parse_arguments(log_opts: &mut LoggerOptions) -> Arguments {
     return_arguments
 }
 
-fn parse_input(input: String) {
+fn parse_input(input: &str) -> Result<bool, String> {
     let log_opts = LoggerOptions { debug: false };
 
-    match input.as_str() {
-        "move" => logger("Action triggered: move", None, &log_opts),
-        _ => logger("Action triggered: default", None, &log_opts),
+    match input {
+        "move" => { 
+            logger("Action triggered: move", None, &log_opts);
+            print("moving")?;
+            Ok(true)
+        },
+        _ => { 
+            logger("Action triggered: default", None, &log_opts);
+            print("unknown command")?;
+            Ok(true)
+        },
     }
 }
 
-fn main() -> io::Result<()> {
+fn print(message: &str) -> Result<bool, String> {
+    write!(std::io::stdout(), "{message}").map_err(|e| e.to_string())?;
+    std::io::stdout().flush().map_err(|e| e.to_string())?;
+    Ok(true)
+}
+
+// from clap/examples/repl.rs
+fn readline() -> Result<String, String> {
+
+    print("> ")?;
+    
+    let mut buffer = String::new();
+    std::io::stdin()
+        .read_line(&mut buffer)
+        .map_err(|e| e.to_string())?;
+    Ok(buffer)
+}
+
+fn main() -> Result<(), String> {
     let mut log_opts = LoggerOptions { debug: false };
     let arguments = parse_arguments(&mut log_opts);
 
     if arguments.start {
-        loop {
-            logger("Main loop started by start argument", None, &log_opts);
 
-            let mut input = String::new();
-            match io::stdin().read_line(&mut input) {
-                Ok(_) => {
-                    if input == "exit" {
+        logger("Main loop started by start argument", None, &log_opts);
+        loop {
+
+            let line = readline()?;
+            let line = line.trim();
+            if line.is_empty() {
+                continue;
+            }
+
+            match parse_input(line) {
+                Ok(quit) => {
+                    if quit {
                         break;
-                    } else {
-                        parse_input(input);
                     }
                 }
-                Err(error) => println!("Error: {error}"),
+                Err(err) => {
+                    write!(std::io::stdout(), "{err}").map_err(|e| e.to_string())?;
+                    std::io::stdout().flush().map_err(|e| e.to_string())?;
+                }
             }
         }
+
+        return Ok(())
     }
 
     logger("Exiting: End of file", None, &log_opts);
