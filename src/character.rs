@@ -1,6 +1,7 @@
 use crate::space::Position;
 
 impl Character {
+    #[allow(dead_code)]
     fn r#move(&mut self, x: i32, y: i32, z: i32) -> Position {
         self.position.x += x;
         self.position.y += y;
@@ -10,7 +11,8 @@ impl Character {
 }
 
 pub struct Character {
-    pub name: String,
+    pub name: Box<str>,
+    pub title: Box<str>,
     pub hp: HP,
     pub mp: MP,
     pub dexterity: i32,

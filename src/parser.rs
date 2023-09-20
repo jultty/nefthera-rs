@@ -39,6 +39,7 @@ pub fn parse_arguments(log_opts: &mut LoggerOptions) -> Arguments {
     let mut return_arguments: Arguments = Arguments {
         debug: false,
         start: false,
+        demo: false,
     };
 
     for arg in &arguments {
@@ -46,6 +47,10 @@ pub fn parse_arguments(log_opts: &mut LoggerOptions) -> Arguments {
             "--debug" => {
                 return_arguments.debug = true;
                 log_opts.debug = true;
+            }
+            "--demo" => {
+                return_arguments.demo = true;
+                logger("Demo data is enabled", None, log_opts);
             }
             "--start" => return_arguments.start = true,
             _ => logger("Invalid argument", Some(arg), log_opts),
@@ -62,4 +67,5 @@ pub fn parse_arguments(log_opts: &mut LoggerOptions) -> Arguments {
 pub struct Arguments {
     pub debug: bool,
     pub start: bool,
+    pub demo: bool,
 }

@@ -1,8 +1,11 @@
 mod character;
+mod demo;
 mod parser;
 mod space;
 mod utils;
 
+use demo::bertha;
+use demo::ian;
 use parser::*;
 use utils::*;
 
@@ -12,6 +15,15 @@ fn main() -> Result<(), String> {
 
     if arguments.start {
         logger("Main loop started by start argument", None, &log_opts);
+
+        if arguments.demo {
+            let bertha = bertha();
+            logger("Demo character loaded: ", Some(&bertha.name), &log_opts);
+            let ian = ian();
+            logger("Demo character lodaded: ", Some(&ian.name), &log_opts);
+            logger("Main loop started by start argument", None, &log_opts);
+        }
+
         loop {
             let line = readline()?;
             let line = line.trim();

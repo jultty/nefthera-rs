@@ -1,6 +1,6 @@
 #[derive(Clone, Copy)]
 pub struct Position {
-    area: Area,
+    pub area: Area,
     pub x: i32,
     pub y: i32,
     pub z: i32,
@@ -8,23 +8,26 @@ pub struct Position {
 
 #[derive(Clone, Copy)]
 pub struct Area {
-    map: Map,
-    x: i32,
-    y: i32,
-    z: i32,
+    pub name: &'static str,
+    pub map: Map,
+    pub x: i32,
+    pub y: i32,
+    pub z: i32,
 }
 
 #[derive(Clone, Copy)]
 pub struct Map {
-    world: World,
-    x: i32,
-    y: i32,
-    z: i32,
+    pub name: &'static str,
+    pub world: World,
+    pub x: i32,
+    pub y: i32,
+    pub z: i32,
 }
 
 #[derive(Clone, Copy)]
 pub struct World {
-    x: i32,
-    y: i32,
-    z: i32,
+    pub name: &'static str,
+    pub x: i32,
+    pub y: i32,
+    pub z: i32,
 }
