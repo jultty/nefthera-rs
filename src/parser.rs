@@ -1,9 +1,36 @@
 use crate::utils::*;
 use std::env;
 
-pub struct Arguments {
-    pub debug: bool,
-    pub start: bool,
+pub fn parse_input(input: &str) -> Result<bool, String> {
+    let log_opts = LoggerOptions { debug: false };
+
+    match input {
+        "move" => {
+            logger("Action triggered: move", None, &log_opts);
+            print("moving", true)?;
+            Ok(false)
+        }
+        "quit" => {
+            logger("Action triggered: quit", None, &log_opts);
+            print("quitting", true)?;
+            Ok(true)
+        }
+        _ => {
+            logger("Unknown command:", Some(input), &log_opts);
+            Ok(false)
+        }
+    }
+}
+
+// from clap/examples/repl.rs
+pub fn readline() -> Result<String, String> {
+    print("> ", false)?;
+
+    let mut buffer = String::new();
+    std::io::stdin()
+        .read_line(&mut buffer)
+        .map_err(|e| e.to_string())?;
+    Ok(buffer)
 }
 
 pub fn parse_arguments(log_opts: &mut LoggerOptions) -> Arguments {
@@ -32,35 +59,7 @@ pub fn parse_arguments(log_opts: &mut LoggerOptions) -> Arguments {
     return_arguments
 }
 
-pub fn parse_input(input: &str) -> Result<bool, String> {
-    let log_opts = LoggerOptions { debug: false };
-
-    match input {
-        "move" => {
-            logger("Action triggered: move", None, &log_opts);
-            print("moving", true)?;
-            Ok(false)
-        }
-        "quit" => {
-            logger("Action triggered: quit", None, &log_opts);
-            print("quitting", true)?;
-            Ok(true)
-        }
-        _ => {
-            logger("Action triggered: default", None, &log_opts);
-            print("unknown command", true)?;
-            Ok(false)
-        }
-    }
-}
-
-// from clap/examples/repl.rs
-pub fn readline() -> Result<String, String> {
-    print("> ", false)?;
-
-    let mut buffer = String::new();
-    std::io::stdin()
-        .read_line(&mut buffer)
-        .map_err(|e| e.to_string())?;
-    Ok(buffer)
+pub struct Arguments {
+    pub debug: bool,
+    pub start: bool,
 }
