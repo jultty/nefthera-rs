@@ -1,8 +1,8 @@
-use nefthera::demo::ian;
+use nefthera::demo;
 
 #[test]
 fn characters_can_move() {
-    let mut ian = ian();
+    let mut ian = demo::get_demo_character();
     let x_shift = 6;
     let y_shift = 3;
     let z_shift = 9;
@@ -18,7 +18,7 @@ fn characters_can_move() {
 
 #[test]
 fn characters_can_move_backwards() {
-    let mut ian = ian();
+    let mut ian = demo::get_demo_character();
     let x_shift = 6;
     let y_shift = 3;
     let z_shift = 9;

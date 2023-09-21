@@ -1,6 +1,3 @@
-use crate::character::Character;
-use std::collections::HashSet;
-
 #[derive(Clone, Copy)]
 pub struct Position {
     pub area: Area,
@@ -12,12 +9,27 @@ pub struct Position {
 #[derive(Clone, Copy)]
 pub struct Area {
     pub name: &'static str,
-    pub map: Map,
+    pub zone: Zone,
     pub range: AreaRange,
 }
 
 #[derive(Clone, Copy)]
-pub struct Map {
+pub struct Zone {
+    pub name: &'static str,
+    pub is_settlement: bool,
+    pub region: Region,
+    pub range: AreaRange,
+}
+
+#[derive(Clone, Copy)]
+pub struct Region {
+    pub name: &'static str,
+    pub domain: Domain,
+    pub range: AreaRange,
+}
+
+#[derive(Clone, Copy)]
+pub struct Domain {
     pub name: &'static str,
     pub world: World,
     pub range: AreaRange,
@@ -26,7 +38,14 @@ pub struct Map {
 #[derive(Clone, Copy)]
 pub struct World {
     pub name: &'static str,
+    pub realm: Realm,
     pub range: AreaRange,
+}
+
+#[derive(Clone, Copy)]
+pub struct Realm {
+    pub name: &'static str,
+    pub number: i32,
 }
 
 #[derive(Clone, Copy)]

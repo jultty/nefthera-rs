@@ -7,7 +7,7 @@ fn main() -> Result<(), String> {
     let arguments = parse_arguments(&mut log_opts);
 
     if arguments.demo {
-        let player = demo::ian();
+        let player = demo::get_demo_character();
         logger("Demo character loaded:", Some(&player.name), &log_opts);
     }
 
