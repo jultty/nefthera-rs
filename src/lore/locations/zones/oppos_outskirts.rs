@@ -8,7 +8,7 @@ pub fn instantiate() -> Zone {
         name: "Oppos Outskirts",
         is_settlement: false,
         region: fontain::instantiate(),
-        range: AreaRange {
+        limits: AreaLimits {
             min_x: 0,
             max_x: 0,
             min_y: -100000,

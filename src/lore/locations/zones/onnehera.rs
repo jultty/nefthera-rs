@@ -8,7 +8,7 @@ pub fn instantiate() -> Zone {
         name: "Onnehera",
         is_settlement: true,
         region: fontain::instantiate(),
-        range: AreaRange {
+        limits: AreaLimits {
             min_x: 0,
             max_x: 0,
             min_y: 0,

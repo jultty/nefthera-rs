@@ -5,7 +5,7 @@ pub fn instantiate() -> Region {
     Region {
         name: "Fontain",
         domain: domains::get_fiji(),
-        range: AreaRange {
+        limits: AreaLimits {
             min_x: 0,
             max_x: 0,
             min_y: -100000,

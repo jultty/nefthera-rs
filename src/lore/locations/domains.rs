@@ -4,7 +4,7 @@ pub fn get_fiji() -> Domain {
     Domain {
         name: "Fiji",
         world: get_earth(),
-        range: AreaRange {
+        limits: AreaLimits {
             min_x: 0,
             max_x: 0,
             min_y: -100000,
@@ -19,7 +19,7 @@ fn get_earth() -> World {
     World {
         name: "Earth",
         realm: get_leshye(),
-        range: AreaRange {
+        limits: AreaLimits {
             min_x: 0,
             max_x: 0,
             min_y: -100000,
