@@ -3,15 +3,15 @@ use crate::lore::locations::domains;
 
 pub fn instantiate() -> Region {
     Region {
-        name: "Fontain",
+        name: "East Fontain",
         domain: domains::get_fiji(),
         limits: AreaLimits {
-            min_x: 0,
+            min_x: -25000,
             max_x: 0,
-            min_y: -100000,
-            max_y: -80000,
-            max_z: 0,
-            min_z: 0,
+            min_y: -75000,
+            max_y: -50000,
+            max_z: 1000,
+            min_z: 1000,
         },
     }
 }

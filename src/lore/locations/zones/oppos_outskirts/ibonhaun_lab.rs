@@ -7,12 +7,12 @@ pub fn instantiate() -> Area {
         name: "Ibonhaun Laboratory",
         zone: oppos_outskirts::instantiate(),
         limits: AreaLimits {
-            min_x: 0,
-            max_x: 0,
-            min_y: 0,
-            max_y: 0,
-            max_z: 0,
-            min_z: 0,
+            min_x: -11000,
+            max_x: -10000,
+            min_y: -70000,
+            max_y: -71000,
+            max_z: 1000,
+            min_z: -1000,
         },
     }
 }

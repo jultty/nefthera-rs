@@ -39,7 +39,6 @@ pub struct Domain {
 pub struct World {
     pub name: &'static str,
     pub realm: Realm,
-    pub limits: AreaLimits,
 }
 
 #[derive(Clone, Copy)]
