@@ -1,11 +1,11 @@
-use crate::lore::locations::zones::onnehera::onnehera;
-use crate::space::Area;
-use crate::space::AreaRange;
+use crate::base::space::Area;
+use crate::base::space::AreaRange;
+use crate::lore::locations::zones::onnehera;
 
-pub fn temple_of_catherine() -> Area {
+pub fn instantiate() -> Area {
     Area {
         name: "Temple of Catherine",
-        zone: onnehera(),
+        zone: onnehera::instantiate(),
         range: AreaRange {
             min_x: 0,
             max_x: 0,

@@ -1,6 +1,6 @@
-use crate::character::*;
-use crate::space::Position;
-use crate::lore::locations::areas::temple_of_catherine::temple_of_catherine;
+use crate::base::character::*;
+use crate::base::space::Position;
+use crate::lore::locations::zones::onnehera::temple_of_catherine;
 
 pub fn bertha() -> Character {
     Character {
@@ -21,11 +21,10 @@ pub fn bertha() -> Character {
         perception: 101,
         grit: 600,
         position: Position {
-            area: temple_of_catherine(),
+            area: temple_of_catherine::instantiate(),
             x: 65,
             y: 41,
             z: 0,
         },
     }
 }
-

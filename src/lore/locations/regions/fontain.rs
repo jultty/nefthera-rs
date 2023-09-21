@@ -1,10 +1,10 @@
-use crate::space::*;
-use crate::lore::locations::domains::fiji;
+use crate::base::space::*;
+use crate::lore::locations::domains;
 
-pub fn fontain() -> Region {
+pub fn instantiate() -> Region {
     Region {
         name: "Fontain",
-        domain: fiji(),
+        domain: domains::get_fiji(),
         range: AreaRange {
             min_x: 0,
             max_x: 0,

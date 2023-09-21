@@ -1,11 +1,11 @@
-use crate::space::Area;
-use crate::space::AreaRange;
-use crate::lore::locations::zones::oppos_outskirts::oppos_outskirts;
+use crate::base::space::Area;
+use crate::base::space::AreaRange;
+use crate::lore::locations::zones::oppos_outskirts;
 
-pub fn ibonhaun_lab() -> Area {
+pub fn instantiate() -> Area {
     Area {
         name: "Ibonhaun Laboratory",
-        zone: oppos_outskirts(),
+        zone: oppos_outskirts::instantiate(),
         range: AreaRange {
             min_x: 0,
             max_x: 0,
@@ -16,4 +16,3 @@ pub fn ibonhaun_lab() -> Area {
         },
     }
 }
-

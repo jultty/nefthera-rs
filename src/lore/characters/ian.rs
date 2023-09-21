@@ -1,6 +1,6 @@
-use crate::character::*;
-use crate::space::Position;
-use crate::lore::locations::areas::ibonhaun_lab::ibonhaun_lab;
+use crate::base::character::*;
+use crate::base::space::Position;
+use crate::lore::locations::zones::oppos_outskirts::ibonhaun_lab;
 
 pub fn ian() -> Character {
     Character {
@@ -15,11 +15,10 @@ pub fn ian() -> Character {
         perception: 1332,
         grit: 540,
         position: Position {
-            area: ibonhaun_lab(),
+            area: ibonhaun_lab::instantiate(),
             x: 15,
             y: 11,
             z: 0,
         },
     }
 }
-

@@ -1,4 +1,4 @@
-use crate::space::Position;
+use crate::base::space::Position;
 
 impl Character {
     pub fn go(&mut self, x: i32, y: i32, z: i32) -> Position {

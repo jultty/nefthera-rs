@@ -1,11 +1,13 @@
-use crate::space::*;
-use crate::lore::locations::regions::fontain::fontain;
+pub mod ibonhaun_lab;
 
-pub fn oppos_outskirts() -> Zone {
+use crate::base::space::*;
+use crate::lore::locations::regions::fontain;
+
+pub fn instantiate() -> Zone {
     Zone {
         name: "Oppos Outskirts",
         is_settlement: false,
-        region: fontain(),
+        region: fontain::instantiate(),
         range: AreaRange {
             min_x: 0,
             max_x: 0,
@@ -16,4 +18,3 @@ pub fn oppos_outskirts() -> Zone {
         },
     }
 }
-

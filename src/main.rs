@@ -1,6 +1,6 @@
 use nefthera::demo;
-use nefthera::parser::*;
-use nefthera::utils::*;
+use nefthera::util::logger::*;
+use nefthera::util::parser::*;
 
 fn main() -> Result<(), String> {
     let mut log_opts = LoggerOptions { debug: false };
@@ -8,11 +8,11 @@ fn main() -> Result<(), String> {
 
     if arguments.demo {
         let player = demo::get_demo_character();
-        logger("Demo character loaded:", Some(&player.name), &log_opts);
+        log("Demo character loaded:", Some(&player.name), &log_opts);
     }
 
     if arguments.start {
-        logger("Main loop started by start argument", None, &log_opts);
+        log("Main loop started by start argument", None, &log_opts);
 
         loop {
             let line = readline()?;
@@ -36,7 +36,7 @@ fn main() -> Result<(), String> {
         return Ok(());
     }
 
-    logger("Exiting: End of file", None, &log_opts);
+    log("Exiting: End of file", None, &log_opts);
     Ok(())
 }
 

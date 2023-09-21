@@ -1,9 +1,9 @@
-use crate::space::*;
+use crate::base::space::*;
 
-pub fn fiji() -> Domain {
+pub fn get_fiji() -> Domain {
     Domain {
         name: "Fiji",
-        world: earth(),
+        world: get_earth(),
         range: AreaRange {
             min_x: 0,
             max_x: 0,
@@ -11,14 +11,14 @@ pub fn fiji() -> Domain {
             max_y: -80000,
             max_z: 0,
             min_z: 0,
-        }
+        },
     }
 }
 
-fn earth() -> World {
+fn get_earth() -> World {
     World {
         name: "Earth",
-        realm: leshye(),
+        realm: get_leshye(),
         range: AreaRange {
             min_x: 0,
             max_x: 0,
@@ -26,11 +26,11 @@ fn earth() -> World {
             max_y: -80000,
             max_z: 0,
             min_z: 0,
-        }
+        },
     }
 }
 
-fn leshye() -> Realm {
+fn get_leshye() -> Realm {
     Realm {
         name: "Leshyë",
         number: 0,

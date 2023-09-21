@@ -1,11 +1,13 @@
-use crate::space::*;
-use crate::lore::locations::regions::fontain::fontain;
+pub mod temple_of_catherine;
 
-pub fn onnehera() -> Zone {
+use crate::base::space::*;
+use crate::lore::locations::regions::fontain;
+
+pub fn instantiate() -> Zone {
     Zone {
         name: "Onnehera",
         is_settlement: true,
-        region: fontain(),
+        region: fontain::instantiate(),
         range: AreaRange {
             min_x: 0,
             max_x: 0,
@@ -16,4 +18,3 @@ pub fn onnehera() -> Zone {
         },
     }
 }
-
