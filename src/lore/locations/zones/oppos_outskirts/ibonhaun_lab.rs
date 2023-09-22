@@ -1,5 +1,5 @@
-use crate::base::space::Area;
-use crate::base::space::SpaceLimits;
+use crate::base::space::units::Area;
+use crate::base::space::limit::SpaceLimits;
 use crate::lore::locations::zones::oppos_outskirts;
 
 pub fn instantiate() -> Area {

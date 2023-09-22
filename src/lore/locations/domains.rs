@@ -1,4 +1,5 @@
-use crate::base::space::*;
+use crate::base::space::limit::SpaceLimits;
+use crate::base::space::units::{Realm, World, Domain};
 
 pub fn get_fiji() -> Domain {
     Domain {

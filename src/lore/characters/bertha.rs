@@ -1,5 +1,5 @@
 use crate::base::character::*;
-use crate::base::space::Position;
+use crate::base::space::units::Position;
 use crate::lore::locations::zones::onnehera::temple_of_catherine;
 
 pub fn bertha() -> Character {

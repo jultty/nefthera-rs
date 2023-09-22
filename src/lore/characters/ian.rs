@@ -1,5 +1,5 @@
 use crate::base::character::*;
-use crate::base::space::Position;
+use crate::base::space::units::Position;
 use crate::lore::locations::zones::oppos_outskirts::ibonhaun_lab;
 
 pub fn ian() -> Character {

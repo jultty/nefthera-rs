@@ -1,4 +1,5 @@
-use crate::base::space::*;
+use crate::base::space::limit::SpaceLimits;
+use crate::base::space::units::Region;
 use crate::lore::locations::domains;
 
 pub fn instantiate() -> Region {

@@ -1,6 +1,7 @@
 pub mod temple_of_catherine;
 
-use crate::base::space::*;
+use crate::base::space::units::Zone;
+use crate::base::space::limit::SpaceLimits;
 use crate::lore::locations::regions::fontain;
 
 pub fn instantiate() -> Zone {
