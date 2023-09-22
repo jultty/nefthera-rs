@@ -1,12 +1,12 @@
 use crate::base::space::Area;
-use crate::base::space::AreaLimits;
+use crate::base::space::SpaceLimits;
 use crate::lore::locations::zones::oppos_outskirts;
 
 pub fn instantiate() -> Area {
     Area {
         name: "Ibonhaun Laboratory",
         zone: oppos_outskirts::instantiate(),
-        limits: AreaLimits {
+        limits: SpaceLimits {
             min_x: -11000,
             max_x: -10000,
             min_y: -71000,

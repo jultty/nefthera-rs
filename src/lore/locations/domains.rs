@@ -4,7 +4,7 @@ pub fn get_fiji() -> Domain {
     Domain {
         name: "Fiji",
         world: get_earth(),
-        limits: AreaLimits {
+        limits: SpaceLimits {
             min_x: -100000,
             max_x: 100000,
             min_y: -100000,
