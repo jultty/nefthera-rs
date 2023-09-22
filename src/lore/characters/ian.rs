@@ -17,7 +17,7 @@ pub fn ian() -> Character {
         position: Position {
             area: ibonhaun_lab::instantiate(),
             x: -10500,
-            y: -70500,
+            y: -70950,
             z: 0,
         },
     }
