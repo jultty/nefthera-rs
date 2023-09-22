@@ -30,7 +30,7 @@ impl Character {
                 _ => unreachable!(),
             };
 
-            if (position + distance) <= limits.1 && (position + distance >= limits.0) {
+            if (position + distance) < limits.1 && (position + distance > limits.0) {
                 position += distance;
             }
 

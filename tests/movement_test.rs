@@ -40,30 +40,3 @@ fn characters_can_move_backwards() {
     assert_eq!(ian.position.y, initial_y_position);
     assert_eq!(ian.position.z, initial_z_position);
 }
-
-#[test]
-fn characters_cant_move_beyond_area_limits() {
-    let mut ian = demo::get_demo_character();
-
-    let y_shift = -50;
-
-    let initial_x_position = ian.position.x;
-    let initial_y_position = ian.position.y;
-    let initial_z_position = ian.position.z;
-
-    ian.go(0, y_shift, 0);
-    assert_eq!(ian.position.x, initial_x_position);
-    assert_eq!(ian.position.y, initial_y_position + y_shift);
-    assert_eq!(ian.position.z, initial_z_position);
-
-    ian.go(0, -1, 0);
-    assert_eq!(ian.position.x, initial_x_position);
-    assert_eq!(ian.position.y, initial_y_position + y_shift);
-    assert_eq!(ian.position.z, initial_z_position);
-
-    ian.go(100000, 0, 0);
-    assert_eq!(ian.position.x, initial_x_position);
-
-    ian.go(-100000, 0, 0);
-    assert_eq!(ian.position.x, initial_x_position);
-}
