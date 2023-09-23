@@ -1,6 +1,7 @@
 use crate::base::character::*;
+use crate::base::space::passage::PassageMap;
 use crate::lore::characters::ian::ian;
-use crate::lore::locations::passages::*;
+use crate::lore::locations::passages::populate;
 
 pub fn get_demo_character() -> Character {
     ian()

@@ -1,11 +1,8 @@
-use crate::base::space::passage::Passage;
+use crate::base::space::passage::*;
 use crate::lore::locations::zones::*;
-use std::collections::HashMap;
-
-pub type PassageMap = HashMap<&'static str, Passage>;
 
 pub fn populate() -> PassageMap {
-    let mut passages = HashMap::new();
+    let mut passages = PassageMap::new();
 
     fn insert(passages: &mut PassageMap, passage: Passage) {
         passages.insert(passage.key, passage);

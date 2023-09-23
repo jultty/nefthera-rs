@@ -1,4 +1,7 @@
 use super::units::Position;
+use std::collections::HashMap;
+
+pub type PassageMap = HashMap<&'static str, Passage>;
 
 #[derive(Clone, Copy)]
 pub struct Passage {
@@ -23,5 +26,13 @@ impl Passage {
             "Key: {}, open: {}, from: {}, to: {}",
             self.key, self.open, self.from.area.key, self.to.area.key
         );
+    }
+
+    pub fn get_destination(self) -> Option<Position> {
+        if self.open {
+            Some(self.to)
+        } else {
+            None
+        }
     }
 }

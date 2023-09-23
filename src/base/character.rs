@@ -1,3 +1,4 @@
+use crate::base::space::passage::Passage;
 use crate::base::space::units::Position;
 
 impl Character {
@@ -8,6 +9,12 @@ impl Character {
             self.position.z += z;
         };
         self.position
+    }
+
+    pub fn enter_passage(&mut self, passage: Passage) {
+        if passage.get_destination().is_some() {
+            self.position = passage.get_destination().unwrap();
+        }
     }
 }
 
