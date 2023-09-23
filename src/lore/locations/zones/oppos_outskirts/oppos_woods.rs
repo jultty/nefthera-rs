@@ -6,34 +6,34 @@ use crate::lore::locations::zones::oppos_outskirts;
 
 pub fn instantiate() -> Area {
     Area {
-        name: "Ibonhaun Laboratory",
-        key: "OPPOS-OUTSKIRTS_IBONHAUN-LABORATORY",
+        name: "Oppos Woods",
+        key: "OPPOS-OUTSKIRTS_OPPOS-WOODS",
         zone: oppos_outskirts::instantiate(),
         limits: SpaceLimits {
             min_x: -11000,
             max_x: -10000,
-            min_y: -71000,
-            max_y: -70000,
+            min_y: -72000,
+            max_y: -71000,
             max_z: 1000,
             min_z: -1000,
         },
     }
 }
 
-pub fn get_to_oppos_woods() -> Passage {
+pub fn get_to_ibonhaun_lab() -> Passage {
     Passage::initialize(
-        "IBONHAUN-LAB_TO_OPPOS-WOODS",
+        "OPPOS-WOODS_TO_IBONHAUN-LAB",
         true,
         Position {
             area: instantiate(),
             x: -10500,
-            y: -70999,
+            y: -71001,
             z: 0,
         },
         Position {
-            area: oppos_outskirts::oppos_woods::instantiate(),
+            area: oppos_outskirts::ibonhaun_lab::instantiate(),
             x: -10500,
-            y: -710001,
+            y: -70999,
             z: 0,
         },
     )

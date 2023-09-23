@@ -11,6 +11,7 @@ pub struct Position {
 #[derive(Clone, Copy)]
 pub struct Area {
     pub name: &'static str,
+    pub key: &'static str,
     pub zone: Zone,
     pub limits: SpaceLimits,
 }

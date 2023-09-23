@@ -1,10 +1,11 @@
-use crate::base::space::units::Area;
 use crate::base::space::limit::SpaceLimits;
+use crate::base::space::units::Area;
 use crate::lore::locations::zones::onnehera;
 
 pub fn instantiate() -> Area {
     Area {
         name: "Temple of Catherine",
+        key: "ONNEHERA_TEMPLE-OF-CATHERINE",
         zone: onnehera::instantiate(),
         limits: SpaceLimits {
             min_x: 0,
