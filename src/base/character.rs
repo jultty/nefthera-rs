@@ -19,44 +19,10 @@ impl Character {
             do_move = go;
         };
 
-        if do_move {
-            for (index, indexed_distance) in axes.iter().enumerate() {
-                let distance = *indexed_distance;
-
-                let limits = match index {
-                    0 => (
-                        self.position.area.limits.min_x,
-                        self.position.area.limits.max_x,
-                    ),
-                    1 => (
-                        self.position.area.limits.min_y,
-                        self.position.area.limits.max_y,
-                    ),
-                    2 => (
-                        self.position.area.limits.min_z,
-                        self.position.area.limits.max_z,
-                    ),
-                    _ => unreachable!(),
-                };
-
-                let mut position = match index {
-                    0 => self.position.x,
-                    1 => self.position.y,
-                    2 => self.position.z,
-                    _ => unreachable!(),
-                };
-
-                if (position + distance) < limits.1 && (position + distance > limits.0) {
-                    position += distance;
-                }
-
-                match index {
-                    0 => self.position.x = position,
-                    1 => self.position.y = position,
-                    2 => self.position.z = position,
-                    _ => unreachable!(),
-                };
-            }
+        if do_move && self.position.area.limits.validate(self.position, axes[0], axes[1], axes[2]) {
+            self.position.x += axes[0];
+            self.position.y += axes[1];
+            self.position.z += axes[2];
         }
         self.position
     }
