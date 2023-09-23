@@ -1,14 +1,25 @@
+use nefthera::base::character::Character;
+use nefthera::base::space::passage::*;
 use nefthera::demo;
+use nefthera::lore::locations::passages;
 use nefthera::util::logger::*;
 use nefthera::util::parser::*;
 
 fn main() -> Result<(), String> {
+    let mut player: Character;
+    let world: PassageMap;
     let mut log_opts = LoggerOptions { debug: false };
     let arguments = parse_arguments(&mut log_opts);
 
     if arguments.demo {
-        let player = demo::get_demo_character();
+        player = demo::get_demo_character();
+        // TODO make this a struct with several maps and other needed data
+        world = demo::get_passage_map();
         log("Demo character loaded:", Some(&player.name), &log_opts);
+    } else {
+        player = Character::new_blank();
+        world = passages::populate();
+        log("Blank character loaded:", Some(&player.name), &log_opts);
     }
 
     if arguments.start {
@@ -21,14 +32,19 @@ fn main() -> Result<(), String> {
                 continue;
             }
 
-            match parse_input(line) {
-                Ok(quit) => {
-                    if quit {
-                        break;
+            match parse_input(line, &world) {
+                Ok(instruction) => match instruction.kind.as_str() {
+                    "go" => {
+                        player.go(instruction);
                     }
-                }
+                    "sense" => {}
+                    "enter_passage" => player.enter_passage(instruction),
+                    "quit" => break,
+                    _ => {}
+                },
                 Err(err) => {
                     print(&err, true)?;
+                    break;
                 }
             }
         }

@@ -4,8 +4,10 @@ use crate::lore::locations::zones::*;
 pub fn populate() -> PassageMap {
     let mut passages = PassageMap::new();
 
-    fn insert(passages: &mut PassageMap, passage: Passage) {
-        passages.insert(passage.get_origin().unwrap(), vec![passage]);
+    fn insert(map: &mut PassageMap, passage: Passage) {
+        map.entry(passage.get_origin().unwrap())
+            .or_insert_with(Vec::new)
+            .push(passage);
     }
 
     insert(

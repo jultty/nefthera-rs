@@ -1,16 +1,17 @@
+use crate::base::space::passage::PassageMap;
 use crate::util::instruction::Instruction;
 use crate::util::logger::log;
 use crate::util::logger::LoggerOptions;
 use std::env;
 use std::io::Write;
 
-pub fn parse_input(input: &str) -> Result<Instruction, String> {
+pub fn parse_input(input: &str, world: &PassageMap) -> Result<Instruction, String> {
     let log_opts = LoggerOptions { debug: false };
 
     match input.split_whitespace().next() {
         Some("move") => {
             log("Action triggered: move", None, &log_opts);
-            let v: Vec<&str> = input.split(" ").collect();
+            let v: Vec<&str> = input.split(' ').collect();
             let msg = "x: {x} y: {y} z: {z}";
             print(msg, true)?;
 
@@ -22,13 +23,17 @@ pub fn parse_input(input: &str) -> Result<Instruction, String> {
                 v[3].parse().unwrap(),
             ))
         }
-        Some ("enter passage") => { 
+        Some("enter passage") => {
             log("Action triggered: enter passage", None, &log_opts);
             print("entering passage {passage}", true)?;
-            let v: Vec<&str> = input.split(" ").collect();
-            Ok(Instruction::new_enter_passage_instruction(true, v[1..v.len()].join(" ")))
+            let v: Vec<&str> = input.split(' ').collect();
+            Ok(Instruction::new_enter_passage_instruction(
+                true,
+                v[1..v.len()].join(" "),
+                world.clone(),
+            ))
         }
-        Some ("sense") => {
+        Some("sense") => {
             log("Action triggered: sense", None, &log_opts);
             print("you sense {presence}", true)?;
             Ok(Instruction::new_sense_instruction(true))
@@ -77,10 +82,11 @@ pub fn parse_arguments(log_opts: &mut LoggerOptions) -> Arguments {
             "--debug" => {
                 return_arguments.debug = true;
                 log_opts.debug = true;
+                log("Debug flag set", None, log_opts);
             }
             "--demo" => {
                 return_arguments.demo = true;
-                log("Demo data is enabled", None, log_opts);
+                log("Demo flag set", None, log_opts);
             }
             "--start" => return_arguments.start = true,
             _ => log("Invalid argument", Some(arg), log_opts),

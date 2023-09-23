@@ -1,4 +1,5 @@
 use nefthera::demo;
+use nefthera::util::instruction::Instruction;
 
 #[test]
 fn characters_can_move() {
@@ -12,7 +13,8 @@ fn characters_can_move() {
     let initial_y_position = ian.position.y;
     let initial_z_position = ian.position.z;
 
-    ian.go(x_shift, y_shift, z_shift);
+    let go_instruction = Instruction::new_move_instruction(true, x_shift, y_shift, z_shift);
+    ian.go(go_instruction);
     assert_eq!(ian.position.x, initial_x_position + x_shift);
     assert_eq!(ian.position.y, initial_y_position + y_shift);
     assert_eq!(ian.position.z, initial_z_position + z_shift);
@@ -30,12 +32,15 @@ fn characters_can_move_backwards() {
     let initial_y_position = ian.position.y;
     let initial_z_position = ian.position.z;
 
-    ian.go(x_shift, y_shift, z_shift);
+    let mut go_instruction = Instruction::new_move_instruction(true, x_shift, y_shift, z_shift);
+    ian.go(go_instruction);
     assert_eq!(ian.position.x, initial_x_position + x_shift);
     assert_eq!(ian.position.y, initial_y_position + y_shift);
     assert_eq!(ian.position.z, initial_z_position + z_shift);
 
-    ian.go(x_shift * -1, y_shift * -1, z_shift * -1);
+    go_instruction =
+        Instruction::new_move_instruction(true, x_shift * -1, y_shift * -1, z_shift * -1);
+    ian.go(go_instruction);
     assert_eq!(ian.position.x, initial_x_position);
     assert_eq!(ian.position.y, initial_y_position);
     assert_eq!(ian.position.z, initial_z_position);
