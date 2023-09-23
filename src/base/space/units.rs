@@ -1,6 +1,6 @@
 use super::limit::SpaceLimits;
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Eq, Hash, PartialEq)]
 pub struct Position {
     pub area: Area,
     pub x: i32,
@@ -8,7 +8,7 @@ pub struct Position {
     pub z: i32,
 }
 
-#[derive(Clone, Copy)]
+#[derive(Eq, Hash, PartialEq, Clone, Copy)]
 pub struct Area {
     pub name: &'static str,
     pub key: &'static str,
@@ -16,7 +16,7 @@ pub struct Area {
     pub limits: SpaceLimits,
 }
 
-#[derive(Clone, Copy)]
+#[derive(Eq, Hash, PartialEq, Clone, Copy)]
 pub struct Zone {
     pub name: &'static str,
     pub is_settlement: bool,
@@ -24,27 +24,27 @@ pub struct Zone {
     pub limits: SpaceLimits,
 }
 
-#[derive(Clone, Copy)]
+#[derive(Eq, Hash, PartialEq, Clone, Copy)]
 pub struct Region {
     pub name: &'static str,
     pub domain: Domain,
     pub limits: SpaceLimits,
 }
 
-#[derive(Clone, Copy)]
+#[derive(Eq, Hash, PartialEq, Clone, Copy)]
 pub struct Domain {
     pub name: &'static str,
     pub world: World,
     pub limits: SpaceLimits,
 }
 
-#[derive(Clone, Copy)]
+#[derive(Eq, Hash, PartialEq, Clone, Copy)]
 pub struct World {
     pub name: &'static str,
     pub realm: Realm,
 }
 
-#[derive(Clone, Copy)]
+#[derive(Eq, Hash, PartialEq, Clone, Copy)]
 pub struct Realm {
     pub name: &'static str,
     pub number: i32,

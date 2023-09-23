@@ -1,6 +1,6 @@
 use super::units::Position;
 
-#[derive(Clone, Copy)]
+#[derive(Eq, Hash, PartialEq, Clone, Copy)]
 pub struct SpaceLimits {
     pub min_x: i32,
     pub max_x: i32,

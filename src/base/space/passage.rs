@@ -1,7 +1,7 @@
 use super::units::Position;
 use std::collections::HashMap;
 
-pub type PassageMap = HashMap<&'static str, Passage>;
+pub type PassageMap = HashMap<Position, Vec<Passage>>;
 
 #[derive(Clone, Copy)]
 pub struct Passage {
@@ -31,6 +31,14 @@ impl Passage {
     pub fn get_destination(self) -> Option<Position> {
         if self.open {
             Some(self.to)
+        } else {
+            None
+        }
+    }
+
+    pub fn get_origin(self) -> Option<Position> {
+        if self.open {
+            Some(self.from)
         } else {
             None
         }

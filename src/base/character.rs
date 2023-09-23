@@ -1,5 +1,6 @@
 use crate::base::space::passage::Passage;
 use crate::base::space::units::Position;
+use crate::lore::locations::passages;
 
 impl Character {
     pub fn go(&mut self, x: i32, y: i32, z: i32) -> Position {
@@ -14,6 +15,27 @@ impl Character {
     pub fn enter_passage(&mut self, passage: Passage) {
         if passage.get_destination().is_some() {
             self.position = passage.get_destination().unwrap();
+        }
+
+        enum Entity {
+            PassageEntity(Vec<Passage>),
+            CharacterEntity(Vec<Character>),
+        }
+
+        pub fn sense(position: Position) -> Vec<Entity> {
+            let mut sensed_entities: Vec<Entity> = Vec::new();
+
+            // TODO should actually be mutable
+            let passage_map = passages::populate();
+
+            let present_passages = passage_map.get(&position).unwrap();
+
+            // TODO sensing conditions here
+            let sensed_passages = present_passages;
+
+            sensed_entities.push(Entity::PassageEntity(sensed_passages.to_vec()));
+
+            sensed_entities
         }
     }
 }

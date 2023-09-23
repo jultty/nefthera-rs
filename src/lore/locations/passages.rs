@@ -5,7 +5,7 @@ pub fn populate() -> PassageMap {
     let mut passages = PassageMap::new();
 
     fn insert(passages: &mut PassageMap, passage: Passage) {
-        passages.insert(passage.key, passage);
+        passages.insert(passage.get_origin().unwrap(), vec![passage]);
     }
 
     insert(

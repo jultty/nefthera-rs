@@ -1,37 +1,66 @@
+use crate::util::instruction::Instruction;
 use crate::util::logger::log;
 use crate::util::logger::LoggerOptions;
 use std::env;
+use std::io::Write;
 
-pub fn parse_input(input: &str) -> Result<bool, String> {
+pub fn parse_input(input: &str) -> Result<Instruction, String> {
     let log_opts = LoggerOptions { debug: false };
 
-    match input {
-        "move" => {
+    match input.split_whitespace().next() {
+        Some("move") => {
             log("Action triggered: move", None, &log_opts);
-            print("moving", true)?;
-            Ok(false)
+            let v: Vec<&str> = input.split(" ").collect();
+            let msg = "x: {x} y: {y} z: {z}";
+            print(msg, true)?;
+
+            // TODO actually parse based on n/s/e/w/, f/b/l/r, u/d, and respective full words
+            Ok(Instruction::new_move_instruction(
+                true,
+                v[1].parse().unwrap(),
+                v[2].parse().unwrap(),
+                v[3].parse().unwrap(),
+            ))
         }
-        "quit" => {
+        Some ("enter passage") => { 
+            log("Action triggered: enter passage", None, &log_opts);
+            print("entering passage {passage}", true)?;
+            let v: Vec<&str> = input.split(" ").collect();
+            Ok(Instruction::new_enter_passage_instruction(true, v[1..v.len()].join(" ")))
+        }
+        Some ("sense") => {
+            log("Action triggered: sense", None, &log_opts);
+            print("you sense {presence}", true)?;
+            Ok(Instruction::new_sense_instruction(true))
+        }
+        Some("quit" | "exit") => {
             log("Action triggered: quit", None, &log_opts);
             print("quitting", true)?;
-            Ok(true)
+            Ok(Instruction::new_quit_instruction(true))
         }
         _ => {
             log("Unknown command:", Some(input), &log_opts);
-            Ok(false)
+            Err("Uknown command".to_string())
         }
     }
 }
 
-// from clap/examples/repl.rs
-pub fn readline() -> Result<String, String> {
-    print("> ", false)?;
+pub fn print(message: &str, newline: bool) -> Result<bool, String> {
+    if newline {
+        writeln!(std::io::stdout(), "{message}").map_err(|e| e.to_string())?;
+    } else {
+        write!(std::io::stdout(), "{message}").map_err(|e| e.to_string())?;
+    }
+    std::io::stdout().flush().map_err(|e| e.to_string())?;
+    Ok(true)
+}
 
-    let mut buffer = String::new();
-    std::io::stdin()
-        .read_line(&mut buffer)
-        .map_err(|e| e.to_string())?;
-    Ok(buffer)
+// argument parsing
+
+pub struct Arguments {
+    pub debug: bool,
+    pub start: bool,
+    pub demo: bool,
 }
 
 pub fn parse_arguments(log_opts: &mut LoggerOptions) -> Arguments {
@@ -65,19 +94,13 @@ pub fn parse_arguments(log_opts: &mut LoggerOptions) -> Arguments {
     return_arguments
 }
 
-pub struct Arguments {
-    pub debug: bool,
-    pub start: bool,
-    pub demo: bool,
-}
-use std::io::Write;
+// from clap/examples/repl.rs
+pub fn readline() -> Result<String, String> {
+    print("> ", false)?;
 
-pub fn print(message: &str, newline: bool) -> Result<bool, String> {
-    if newline {
-        writeln!(std::io::stdout(), "{message}").map_err(|e| e.to_string())?;
-    } else {
-        write!(std::io::stdout(), "{message}").map_err(|e| e.to_string())?;
-    }
-    std::io::stdout().flush().map_err(|e| e.to_string())?;
-    Ok(true)
+    let mut buffer = String::new();
+    std::io::stdin()
+        .read_line(&mut buffer)
+        .map_err(|e| e.to_string())?;
+    Ok(buffer)
 }
