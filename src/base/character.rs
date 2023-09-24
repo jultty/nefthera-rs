@@ -12,7 +12,13 @@ impl Character {
             do_move = go;
         };
 
-        if do_move && self.position.area.limits.validate(self.position, axes[0], axes[1], axes[2]) {
+        if do_move
+            && self
+                .position
+                .area
+                .limits
+                .validate(self.position, axes[0], axes[1], axes[2])
+        {
             self.position.x += axes[0];
             self.position.y += axes[1];
             self.position.z += axes[2];
@@ -41,21 +47,40 @@ impl Character {
         }
     }
 
-    pub fn sense(position: Position) -> Vec<Entity> {
+    pub fn sense(&self, instruction: Instruction) -> Vec<Entity> {
         let mut sensed_entities: Vec<Entity> = Vec::new();
 
         // TODO should actually be mutable
-        let passage_map = passages::populate();
+        let mut local_sense: bool = false;
+        // TODO should actually be the collection of several entity maps
+        let mut local_world: PassageMap = PassageMap::new();
+        let mut local_position = self.position;
 
-        let present_passages = passage_map.get(&position).unwrap();
+        if let InstructionKind::SenseInstruct {
+            sense,
+            world,
+            position,
+        } = instruction.body
+        {
+            local_sense = sense;
+            local_world = *world;
 
-        // TODO sensing conditions here
-        let sensed_passages = present_passages;
+            if let Some(position) = position {
+                local_position = position;
+            }
+        }
 
-        sensed_entities.push(Entity::PassageEntity(sensed_passages.to_vec()));
+        if local_sense {
+            let present_passages = local_world.get(&local_position).unwrap();
 
+            // TODO sensing conditions here
+            let sensed_passages = present_passages;
+
+            sensed_entities.push(Entity::PassageEntity(sensed_passages.to_vec()));
+        }
         sensed_entities
     }
+
     pub fn new_blank() -> Character {
         Character {
             name: "New Character".into(),

@@ -1,4 +1,5 @@
 use crate::base::space::passage::*;
+use crate::base::space::units::Position;
 
 pub struct Instruction {
     pub body: InstructionKind,
@@ -20,9 +21,17 @@ impl Instruction {
         }
     }
 
-    pub fn new_sense_instruction(sense: bool) -> Instruction {
+    pub fn new_sense_instruction(
+        sense: bool,
+        position: Option<Position>,
+        world: PassageMap,
+    ) -> Instruction {
         Instruction {
-            body: InstructionKind::SenseInstruct { sense },
+            body: InstructionKind::SenseInstruct {
+                sense,
+                position,
+                world: Box::new(world),
+            },
             kind: "sense".to_string(),
         }
     }
@@ -57,6 +66,9 @@ pub enum InstructionKind {
     },
     SenseInstruct {
         sense: bool,
+        // TODO should actually be a world struct with all entity maps
+        world: Box<PassageMap>,
+        position: Option<Position>,
     },
     EnterPassageInstruct {
         enter: bool,

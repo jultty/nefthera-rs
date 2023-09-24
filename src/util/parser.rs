@@ -1,8 +1,8 @@
+use super::print;
 use crate::base::space::passage::PassageMap;
 use crate::util::instruction::Instruction;
 use crate::util::logger::log;
 use crate::util::logger::LoggerOptions;
-use super::print;
 use std::env;
 
 pub fn parse_input(input: &str, world: &PassageMap) -> Result<Instruction, String> {
@@ -32,12 +32,14 @@ pub fn parse_input(input: &str, world: &PassageMap) -> Result<Instruction, Strin
         }
         Some("sense") => {
             log("Action triggered: sense", None, &log_opts);
-            print("you sense {presence}", true)?;
-            Ok(Instruction::new_sense_instruction(true))
+            Ok(Instruction::new_sense_instruction(
+                true,
+                None,
+                world.clone(),
+            ))
         }
         Some("quit" | "exit") => {
             log("Action triggered: quit", None, &log_opts);
-            print("quitting", true)?;
             Ok(Instruction::new_quit_instruction(true))
         }
         _ => {
