@@ -1,6 +1,8 @@
 use crate::base::space::{passage::*, units::Position};
 use crate::lore::locations::zones::*;
-use crate::util::instruction::*;
+use crate::util::{instruction::*, print};
+
+// TODO extract this
 
 impl Character {
     pub fn go(&mut self, instruction: Instruction) -> Position {
@@ -22,6 +24,12 @@ impl Character {
             self.position.x += axes[0];
             self.position.y += axes[1];
             self.position.z += axes[2];
+
+            let msg: String = format!(
+                "Moved to x {} y {} z {}",
+                self.position.x, self.position.y, self.position.z
+            );
+            print(&msg, true);
         }
         self.position
     }
@@ -38,12 +46,26 @@ impl Character {
         }
 
         if local_enter {
-            let passages: &Vec<Passage> = local_map.get(&self.position).unwrap();
+            let passage_search = local_map.get(&self.position);
+            let mut passages = Vec::new();
+
+            if let Some(found) = passage_search {
+                passages = found.to_vec();
+            }
+
             let destination_search = passages.iter().find(|&s| s.key == local_key);
 
+            let msg: String;
             if let Some(found) = destination_search {
                 self.position = found.get_destination().unwrap();
+                msg = format!(
+                    "Moved to {} at x {} y {} z {}",
+                    self.position.area.name, self.position.x, self.position.y, self.position.z
+                );
+            } else {
+                msg = "There is no such passage here.".to_string();
             }
+            print(&msg, true);
         }
     }
 
@@ -52,6 +74,7 @@ impl Character {
 
         // TODO should actually be mutable
         let mut local_sense: bool = false;
+
         // TODO should actually be the collection of several entity maps
         let mut local_world: PassageMap = PassageMap::new();
         let mut local_position = self.position;
@@ -73,17 +96,36 @@ impl Character {
         if local_sense {
             let present_passages = local_world.get(&local_position).unwrap();
 
-            // TODO sensing conditions here
+            // TODO senses everything present, add conditions instead
             let sensed_passages = present_passages;
 
             sensed_entities.push(Entity::PassageEntity(sensed_passages.to_vec()));
+
+            // output message
+            let mut msg: String;
+
+            if sensed_entities.is_empty() {
+                msg = "You couldn't sense anything here.".to_string();
+            } else {
+                if !sensed_passages.is_empty() {
+                    msg = "You sense the following passages here: ".to_string();
+
+                    for p in sensed_passages {
+                        msg.push_str(p.name);
+                        msg.push(' ');
+                    }
+                } else {
+                    msg = "You sense something unknown in this place.".to_string();
+                }
+            }
+            print(&msg, true);
         }
         sensed_entities
     }
 
     pub fn new_blank() -> Character {
         Character {
-            name: "New Character".into(),
+            name: "Unnamed".into(),
             title: "The Blank".into(),
             hp: HP {
                 current: 100,
@@ -101,8 +143,8 @@ impl Character {
             grit: 10,
             position: Position {
                 area: oppos_outskirts::oppos_woods::instantiate(),
-                x: 0,
-                y: 0,
+                x: -10500,
+                y: -71500,
                 z: 0,
             },
         }

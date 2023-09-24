@@ -22,6 +22,7 @@ pub fn instantiate() -> Area {
 
 pub fn get_to_ibonhaun_lab() -> Passage {
     Passage::initialize(
+        "Passage to the Ibonhaun Laboratory",
         "OPPOS-WOODS_TO_IBONHAUN-LAB",
         true,
         Position {

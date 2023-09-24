@@ -42,8 +42,7 @@ fn main() -> Result<(), String> {
                     _ => {}
                 },
                 Err(err) => {
-                    print(&err, true)?;
-                    break;
+                    print(&err, true);
                 }
             }
         }

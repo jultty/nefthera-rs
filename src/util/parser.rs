@@ -13,7 +13,7 @@ pub fn parse_input(input: &str, world: &PassageMap) -> Result<Instruction, Strin
             log("Action triggered: move", None, &log_opts);
             let v: Vec<&str> = input.split(' ').collect();
 
-            // TODO actually parse based on n/s/e/w/, f/b/l/r, u/d, and respective full words
+            // TODO parse based on n/s/e/w/, f/b/l/r, u/d, respective full words
             Ok(Instruction::new_move_instruction(
                 true,
                 v[1].parse().unwrap(),
@@ -21,7 +21,7 @@ pub fn parse_input(input: &str, world: &PassageMap) -> Result<Instruction, Strin
                 v[3].parse().unwrap(),
             ))
         }
-        Some("enter passage") => {
+        Some("passage") => {
             log("Action triggered: enter passage", None, &log_opts);
             let v: Vec<&str> = input.split(' ').collect();
             Ok(Instruction::new_enter_passage_instruction(
@@ -44,7 +44,7 @@ pub fn parse_input(input: &str, world: &PassageMap) -> Result<Instruction, Strin
         }
         _ => {
             log("Unknown command:", Some(input), &log_opts);
-            Err("Uknown command".to_string())
+            Err("Unknown command".to_string())
         }
     }
 }
@@ -91,7 +91,7 @@ pub fn parse_arguments(log_opts: &mut LoggerOptions) -> Arguments {
 
 // from clap/examples/repl.rs
 pub fn readline() -> Result<String, String> {
-    print("> ", false)?;
+    print("> ", false);
 
     let mut buffer = String::new();
     std::io::stdin()

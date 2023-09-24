@@ -5,6 +5,7 @@ pub type PassageMap = HashMap<Position, Vec<Passage>>;
 
 #[derive(Clone, Copy)]
 pub struct Passage {
+    pub name: &'static str,
     pub key: &'static str,
     open: bool,
     from: Position,
@@ -12,8 +13,15 @@ pub struct Passage {
 }
 
 impl Passage {
-    pub fn initialize(key: &'static str, open: bool, from: Position, to: Position) -> Passage {
+    pub fn initialize(
+        name: &'static str,
+        key: &'static str,
+        open: bool,
+        from: Position,
+        to: Position,
+    ) -> Passage {
         Passage {
+            name,
             key,
             open,
             from,
