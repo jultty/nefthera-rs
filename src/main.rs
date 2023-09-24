@@ -36,7 +36,9 @@ fn main() -> Result<(), String> {
                     "go" => {
                         player.go(instruction);
                     }
-                    "sense" => {}
+                    "sense" => {
+                        player.sense(instruction);
+                    }
                     "enter_passage" => player.enter_passage(instruction),
                     "quit" => break,
                     _ => {}

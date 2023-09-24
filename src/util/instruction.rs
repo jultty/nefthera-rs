@@ -67,8 +67,8 @@ pub enum InstructionKind {
     SenseInstruct {
         sense: bool,
         // TODO should actually be a world struct with all entity maps
-        world: Box<PassageMap>,
         position: Option<Position>,
+        world: Box<PassageMap>,
     },
     EnterPassageInstruct {
         enter: bool,

@@ -94,29 +94,33 @@ impl Character {
         }
 
         if local_sense {
-            let present_passages = local_world.get(&local_position).unwrap();
+            let mut present_passages: Vec<Passage> = Vec::new();
+
+            if let Some(passages) = local_world.get(&local_position) {
+                present_passages = passages.to_vec();
+            }
 
             // TODO senses everything present, add conditions instead
             let sensed_passages = present_passages;
 
-            sensed_entities.push(Entity::PassageEntity(sensed_passages.to_vec()));
+            if !sensed_passages.is_empty() {
+                sensed_entities.push(Entity::PassageEntity(sensed_passages.to_vec()));
+            }
 
             // output message
             let mut msg: String;
 
             if sensed_entities.is_empty() {
                 msg = "You couldn't sense anything here.".to_string();
-            } else {
-                if !sensed_passages.is_empty() {
-                    msg = "You sense the following passages here: ".to_string();
+            } else if !sensed_passages.is_empty() {
+                msg = "You sense the following passages here: ".to_string();
 
-                    for p in sensed_passages {
-                        msg.push_str(p.name);
-                        msg.push(' ');
-                    }
-                } else {
-                    msg = "You sense something unknown in this place.".to_string();
+                for p in sensed_passages {
+                    msg.push_str(p.name);
+                    msg.push(' ');
                 }
+            } else {
+                msg = "You sense something unknown in this place.".to_string();
             }
             print(&msg, true);
         }
