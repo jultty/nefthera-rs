@@ -2,7 +2,7 @@ use nefthera::demo;
 use nefthera::util::instruction::Instruction;
 
 #[test]
-fn characters_can_move() {
+fn can_move() {
     let mut ian = demo::get_demo_character();
 
     let x_shift = 6;
@@ -21,7 +21,7 @@ fn characters_can_move() {
 }
 
 #[test]
-fn characters_can_move_backwards() {
+fn can_move_backwards() {
     let mut ian = demo::get_demo_character();
 
     let x_shift = 6;

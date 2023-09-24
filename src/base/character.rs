@@ -1,13 +1,6 @@
-use crate::base::space::passage::*;
-use crate::base::space::units::Position;
-use crate::lore::locations::passages;
+use crate::base::space::{passage::*, units::Position};
 use crate::lore::locations::zones::*;
 use crate::util::instruction::*;
-
-pub enum Entity {
-    PassageEntity(Vec<Passage>),
-    CharacterEntity(Vec<Character>),
-}
 
 impl Character {
     pub fn go(&mut self, instruction: Instruction) -> Position {
@@ -39,8 +32,8 @@ impl Character {
         }
 
         if local_enter {
-            let passage: &Vec<Passage> = local_map.get(&self.position).unwrap();
-            let destination_search = passage.iter().find(|&s| s.key == local_key);
+            let passages: &Vec<Passage> = local_map.get(&self.position).unwrap();
+            let destination_search = passages.iter().find(|&s| s.key == local_key);
 
             if let Some(found) = destination_search {
                 self.position = found.get_destination().unwrap();
@@ -103,6 +96,11 @@ pub struct Character {
     pub perception: i32,
     pub grit: i32,
     pub position: Position,
+}
+
+pub enum Entity {
+    PassageEntity(Vec<Passage>),
+    CharacterEntity(Vec<Character>),
 }
 
 pub struct HP {

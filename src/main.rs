@@ -2,8 +2,7 @@ use nefthera::base::character::Character;
 use nefthera::base::space::passage::*;
 use nefthera::demo;
 use nefthera::lore::locations::passages;
-use nefthera::util::logger::*;
-use nefthera::util::parser::*;
+use nefthera::util::{print, logger::*, parser::*};
 
 fn main() -> Result<(), String> {
     let mut player: Character;

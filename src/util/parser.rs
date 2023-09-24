@@ -2,8 +2,8 @@ use crate::base::space::passage::PassageMap;
 use crate::util::instruction::Instruction;
 use crate::util::logger::log;
 use crate::util::logger::LoggerOptions;
+use super::print;
 use std::env;
-use std::io::Write;
 
 pub fn parse_input(input: &str, world: &PassageMap) -> Result<Instruction, String> {
     let log_opts = LoggerOptions { debug: false };
@@ -12,8 +12,6 @@ pub fn parse_input(input: &str, world: &PassageMap) -> Result<Instruction, Strin
         Some("move") => {
             log("Action triggered: move", None, &log_opts);
             let v: Vec<&str> = input.split(' ').collect();
-            let msg = "x: {x} y: {y} z: {z}";
-            print(msg, true)?;
 
             // TODO actually parse based on n/s/e/w/, f/b/l/r, u/d, and respective full words
             Ok(Instruction::new_move_instruction(
@@ -25,7 +23,6 @@ pub fn parse_input(input: &str, world: &PassageMap) -> Result<Instruction, Strin
         }
         Some("enter passage") => {
             log("Action triggered: enter passage", None, &log_opts);
-            print("entering passage {passage}", true)?;
             let v: Vec<&str> = input.split(' ').collect();
             Ok(Instruction::new_enter_passage_instruction(
                 true,
@@ -48,16 +45,6 @@ pub fn parse_input(input: &str, world: &PassageMap) -> Result<Instruction, Strin
             Err("Uknown command".to_string())
         }
     }
-}
-
-pub fn print(message: &str, newline: bool) -> Result<bool, String> {
-    if newline {
-        writeln!(std::io::stdout(), "{message}").map_err(|e| e.to_string())?;
-    } else {
-        write!(std::io::stdout(), "{message}").map_err(|e| e.to_string())?;
-    }
-    std::io::stdout().flush().map_err(|e| e.to_string())?;
-    Ok(true)
 }
 
 // argument parsing

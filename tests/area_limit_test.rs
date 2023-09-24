@@ -2,7 +2,7 @@ use nefthera::demo;
 use nefthera::util::instruction::Instruction;
 
 #[test]
-fn characters_cant_move_beyond_area_limits() {
+fn cant_move_beyond_area_limits() {
     let mut ian = demo::get_demo_character();
 
     let y_shift = -49;

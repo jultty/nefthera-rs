@@ -21,13 +21,6 @@ impl Passage {
         }
     }
 
-    pub fn print_key(self) {
-        println!(
-            "Key: {}, open: {}, from: {}, to: {}",
-            self.key, self.open, self.from.area.key, self.to.area.key
-        );
-    }
-
     pub fn get_destination(self) -> Option<Position> {
         if self.open {
             Some(self.to)
