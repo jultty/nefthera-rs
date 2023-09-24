@@ -8,10 +8,12 @@ impl Character {
     pub fn go(&mut self, instruction: Instruction) -> Position {
         let mut axes: Vec<i32> = Vec::new();
         let mut do_move: bool = false;
+        let mut local_world: PassageMap = PassageMap::new();
 
-        if let InstructionKind::MoveInstruct { go, x, y, z } = instruction.body {
+        if let InstructionKind::MoveInstruct { go, world, x, y, z } = instruction.body {
             axes.extend_from_slice(&[x, y, z]);
             do_move = go;
+            local_world = *world;
         };
 
         if do_move
@@ -29,7 +31,17 @@ impl Character {
                 "Moved to x {} y {} z {}",
                 self.position.x, self.position.y, self.position.z
             );
+
             print(&msg, true);
+
+            self.sense(Instruction {
+                body: InstructionKind::SenseInstruct {
+                    sense: true,
+                    world: Box::new(local_world),
+                    position: Some(self.position),
+                },
+                kind: "sense".to_string(),
+            });
         }
         self.position
     }
@@ -72,7 +84,6 @@ impl Character {
     pub fn sense(&self, instruction: Instruction) -> Vec<Entity> {
         let mut sensed_entities: Vec<Entity> = Vec::new();
 
-        // TODO should actually be mutable
         let mut local_sense: bool = false;
 
         // TODO should actually be the collection of several entity maps
@@ -112,8 +123,13 @@ impl Character {
 
             if sensed_entities.is_empty() {
                 msg = "You couldn't sense anything here.".to_string();
-            } else if !sensed_passages.is_empty() {
-                msg = "You sense the following passages here: ".to_string();
+            } else if sensed_passages.len() == 1 {
+                msg = "You sense a passage here: ".to_string();
+
+                msg.push_str(sensed_passages[0].name);
+                msg.push(' ');
+            } else if sensed_passages.len() > 1 {
+                msg = "You sense passages here: ".to_string();
 
                 for p in sensed_passages {
                     msg.push_str(p.name);

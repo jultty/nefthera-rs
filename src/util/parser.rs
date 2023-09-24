@@ -16,6 +16,7 @@ pub fn parse_input(input: &str, world: &PassageMap) -> Result<Instruction, Strin
             // TODO parse based on n/s/e/w/, f/b/l/r, u/d, respective full words
             Ok(Instruction::new_move_instruction(
                 true,
+                world.clone(),
                 v[1].parse().unwrap(),
                 v[2].parse().unwrap(),
                 v[3].parse().unwrap(),

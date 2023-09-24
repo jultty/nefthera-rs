@@ -7,9 +7,21 @@ pub struct Instruction {
 }
 
 impl Instruction {
-    pub fn new_move_instruction(go: bool, x: i32, y: i32, z: i32) -> Instruction {
+    pub fn new_move_instruction(
+        go: bool,
+        world: PassageMap,
+        x: i32,
+        y: i32,
+        z: i32,
+    ) -> Instruction {
         Instruction {
-            body: InstructionKind::MoveInstruct { go, x, y, z },
+            body: InstructionKind::MoveInstruct {
+                go,
+                world: Box::new(world),
+                x,
+                y,
+                z,
+            },
             kind: "go".to_string(),
         }
     }
@@ -57,6 +69,7 @@ impl Instruction {
 pub enum InstructionKind {
     MoveInstruct {
         go: bool,
+        world: Box<PassageMap>,
         x: i32,
         y: i32,
         z: i32,
