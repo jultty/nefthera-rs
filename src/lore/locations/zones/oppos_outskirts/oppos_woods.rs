@@ -1,3 +1,4 @@
+use crate::base::description::Description;
 use crate::base::space::limit::SpaceLimits;
 use crate::base::space::passage::Passage;
 use crate::base::space::units::Area;
@@ -9,6 +10,7 @@ pub fn instantiate() -> Area {
         name: "Oppos Woods",
         key: "OPPOS-OUTSKIRTS_OPPOS-WOODS",
         zone: oppos_outskirts::instantiate(),
+        description: Description::instantiate("Not added yet"),
         limits: SpaceLimits {
             min_x: -11000,
             max_x: -10000,
@@ -28,7 +30,7 @@ pub fn get_to_ibonhaun_lab() -> Passage {
         Position {
             area: instantiate(),
             x: -10500,
-            y: -71001,
+            y: -710001,
             z: 0,
         },
         Position {

@@ -1,4 +1,5 @@
 use super::limit::SpaceLimits;
+use crate::base::description::Description;
 
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
 pub struct Position {
@@ -13,6 +14,7 @@ pub struct Area {
     pub name: &'static str,
     pub key: &'static str,
     pub zone: Zone,
+    pub description: Description,
     pub limits: SpaceLimits,
 }
 

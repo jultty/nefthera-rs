@@ -2,8 +2,6 @@ use crate::base::space::{passage::*, units::Position};
 use crate::lore::locations::zones::*;
 use crate::util::{instruction::*, print};
 
-// TODO extract this
-
 impl Character {
     pub fn go(&mut self, instruction: Instruction) -> Position {
         let mut axes: Vec<i32> = Vec::new();
@@ -71,8 +69,12 @@ impl Character {
             if let Some(found) = destination_search {
                 self.position = found.get_destination().unwrap();
                 msg = format!(
-                    "Moved to {} at x {} y {} z {}",
-                    self.position.area.name, self.position.x, self.position.y, self.position.z
+                    "Moved to {} at x {} y {} z {}\n{}",
+                    self.position.area.name,
+                    self.position.x,
+                    self.position.y,
+                    self.position.z,
+                    self.position.area.description.get(),
                 );
             } else {
                 msg = "There is no such passage here.".to_string();
