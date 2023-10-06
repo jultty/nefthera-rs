@@ -1,11 +1,14 @@
 use super::print;
-use crate::base::space::passage::PassageMap;
+use crate::base::space::entity::EntityMap;
 use crate::util::instruction::Instruction;
 use crate::util::logger::log;
 use crate::util::logger::LoggerOptions;
 use std::env;
 
-pub fn parse_input(input: &str, world: &PassageMap) -> Result<Instruction, String> {
+pub fn parse_input<'a>(
+    input: &'a str,
+    entity_map: &'a EntityMap,
+) -> Result<Instruction<'a>, String> {
     let log_opts = LoggerOptions { debug: false };
 
     match input.split_whitespace().next() {
@@ -16,10 +19,10 @@ pub fn parse_input(input: &str, world: &PassageMap) -> Result<Instruction, Strin
             // TODO parse based on n/s/e/w/, f/b/l/r, u/d, respective full words
             Ok(Instruction::new_move_instruction(
                 true,
-                world.clone(),
                 v[1].parse().unwrap(),
                 v[2].parse().unwrap(),
                 v[3].parse().unwrap(),
+                entity_map,
             ))
         }
         Some("passage") => {
@@ -28,20 +31,16 @@ pub fn parse_input(input: &str, world: &PassageMap) -> Result<Instruction, Strin
             Ok(Instruction::new_enter_passage_instruction(
                 true,
                 v[1..v.len()].join(" "),
-                world.clone(),
+                entity_map,
             ))
         }
         Some("sense") => {
             log("Action triggered: sense", None, &log_opts);
-            Ok(Instruction::new_sense_instruction(
-                true,
-                None,
-                world.clone(),
-            ))
+            Ok(Instruction::new_sense_instruction(true, None, entity_map))
         }
         Some("quit" | "exit") => {
             log("Action triggered: quit", None, &log_opts);
-            Ok(Instruction::new_quit_instruction(true))
+            Ok(Instruction::new_quit_instruction(true, entity_map))
         }
         _ => {
             log("Unknown command:", Some(input), &log_opts);

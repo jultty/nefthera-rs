@@ -1,23 +1,21 @@
 use nefthera::base::character::Character;
-use nefthera::base::space::passage::*;
+use nefthera::base::space::entity::EntityMap;
 use nefthera::demo;
-use nefthera::lore::locations::passages;
 use nefthera::util::{logger::*, parser::*, print};
 
 fn main() -> Result<(), String> {
     let mut player: Character;
-    let world: PassageMap;
+    let entities: EntityMap;
     let mut log_opts = LoggerOptions { debug: false };
     let arguments = parse_arguments(&mut log_opts);
 
     if arguments.demo {
         player = demo::get_demo_character();
-        // TODO make this a struct with several maps and other needed data
-        world = demo::get_passage_map();
+        entities = demo::get_entity_map();
         log("Demo character loaded:", Some(&player.name), &log_opts);
     } else {
         player = Character::new_blank();
-        world = passages::populate();
+        entities = EntityMap::new();
         log("Blank character loaded:", Some(&player.name), &log_opts);
     }
 
@@ -31,7 +29,7 @@ fn main() -> Result<(), String> {
                 continue;
             }
 
-            match parse_input(line, &world) {
+            match parse_input(line, &entities) {
                 Ok(instruction) => match instruction.kind.as_str() {
                     "go" => {
                         player.go(instruction);

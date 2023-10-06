@@ -4,7 +4,7 @@ use nefthera::util::instruction::Instruction;
 #[test]
 fn can_move() {
     let mut ian = demo::get_demo_character();
-    let world = demo::get_passage_map();
+    let entities = demo::get_entity_map().clone();
 
     let x_shift = 6;
     let y_shift = 3;
@@ -15,7 +15,7 @@ fn can_move() {
     let initial_z_position = ian.position.z;
 
     let go_instruction =
-        Instruction::new_move_instruction(true, world.clone(), x_shift, y_shift, z_shift);
+        Instruction::new_move_instruction(true, x_shift, y_shift, z_shift, &entities);
     ian.go(go_instruction);
     assert_eq!(ian.position.x, initial_x_position + x_shift);
     assert_eq!(ian.position.y, initial_y_position + y_shift);
@@ -25,7 +25,7 @@ fn can_move() {
 #[test]
 fn can_move_backwards() {
     let mut ian = demo::get_demo_character();
-    let world = demo::get_passage_map();
+    let entities = demo::get_entity_map();
 
     let x_shift = 6;
     let y_shift = 3;
@@ -36,7 +36,7 @@ fn can_move_backwards() {
     let initial_z_position = ian.position.z;
 
     let mut go_instruction =
-        Instruction::new_move_instruction(true, world.clone(), x_shift, y_shift, z_shift);
+        Instruction::new_move_instruction(true, x_shift, y_shift, z_shift, &entities);
     ian.go(go_instruction);
     assert_eq!(ian.position.x, initial_x_position + x_shift);
     assert_eq!(ian.position.y, initial_y_position + y_shift);
@@ -44,10 +44,10 @@ fn can_move_backwards() {
 
     go_instruction = Instruction::new_move_instruction(
         true,
-        world.clone(),
         x_shift * -1,
         y_shift * -1,
         z_shift * -1,
+        &entities,
     );
     ian.go(go_instruction);
     assert_eq!(ian.position.x, initial_x_position);

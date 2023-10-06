@@ -1,7 +1,4 @@
 use super::units::Position;
-use std::collections::HashMap;
-
-pub type PassageMap = HashMap<Position, Vec<Passage>>;
 
 #[derive(Clone, Copy)]
 pub struct Passage {

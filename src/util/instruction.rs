@@ -1,67 +1,64 @@
-use crate::base::space::passage::*;
+use crate::base::space::entity::EntityMap;
 use crate::base::space::units::Position;
 
-pub struct Instruction {
+pub struct Instruction<'a> {
     pub body: InstructionKind,
     pub kind: String,
+    pub entity_map: &'a EntityMap,
 }
 
-impl Instruction {
+impl Instruction<'_> {
     pub fn new_move_instruction(
         go: bool,
-        world: PassageMap,
         x: i32,
         y: i32,
         z: i32,
-    ) -> Instruction {
+        entity_map: &EntityMap,
+    ) -> Instruction<'_> {
         Instruction {
-            body: InstructionKind::MoveInstruct {
-                go,
-                world: Box::new(world),
-                x,
-                y,
-                z,
-            },
+            body: InstructionKind::MoveInstruct { go, x, y, z },
             kind: "go".to_string(),
+            entity_map,
         }
     }
 
-    pub fn new_quit_instruction(quit: bool) -> Instruction {
+    pub fn new_quit_instruction(quit: bool, entity_map: &EntityMap) -> Instruction<'_> {
         Instruction {
             body: InstructionKind::QuitInstruct { quit },
             kind: "quit".to_string(),
+            entity_map,
         }
     }
 
     pub fn new_sense_instruction(
         sense: bool,
         position: Option<Position>,
-        world: PassageMap,
-    ) -> Instruction {
+        entity_map: &EntityMap,
+    ) -> Instruction<'_> {
         Instruction {
             body: InstructionKind::SenseInstruct {
                 sense,
-                position,
-                world: Box::new(world),
+                position: Box::new(position),
             },
             kind: "sense".to_string(),
+            entity_map,
         }
     }
 
     pub fn new_enter_passage_instruction(
         enter: bool,
         passage_key: String,
-        map: PassageMap,
-    ) -> Instruction {
+        entity_map: &EntityMap,
+    ) -> Instruction<'_> {
         Instruction {
             body: InstructionKind::EnterPassageInstruct {
                 enter,
                 key: passage_key,
-                map,
             },
 
             // TODO parse passage key from natural language
             kind: "enter_passage".to_string(),
+            entity_map,
         }
     }
 }
@@ -69,7 +66,6 @@ impl Instruction {
 pub enum InstructionKind {
     MoveInstruct {
         go: bool,
-        world: Box<PassageMap>,
         x: i32,
         y: i32,
         z: i32,
@@ -79,13 +75,10 @@ pub enum InstructionKind {
     },
     SenseInstruct {
         sense: bool,
-        // TODO should actually be a world struct with all entity maps
-        position: Option<Position>,
-        world: Box<PassageMap>,
+        position: Box<Option<Position>>,
     },
     EnterPassageInstruct {
         enter: bool,
         key: String,
-        map: PassageMap,
     },
 }

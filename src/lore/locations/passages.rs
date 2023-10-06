@@ -1,13 +1,14 @@
+use crate::base::space::entity::*;
 use crate::base::space::passage::*;
 use crate::lore::locations::zones::*;
 
-pub fn populate() -> PassageMap {
-    let mut passages = PassageMap::new();
+pub fn populate() -> EntityGroup<Passage> {
+    let mut passages = EntityGroup {
+        entities: Vec::<Passage>::new(),
+    };
 
-    fn insert(map: &mut PassageMap, passage: Passage) {
-        map.entry(passage.get_origin().unwrap())
-            .or_insert_with(Vec::new)
-            .push(passage);
+    fn insert(group: &mut EntityGroup<Passage>, passage: Passage) {
+        group.entities.push(passage);
     }
 
     insert(

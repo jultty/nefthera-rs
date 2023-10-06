@@ -1,4 +1,4 @@
-use crate::base::space::{passage::*, units::Position};
+use crate::base::space::{entity::*, passage::Passage, units::Position};
 use crate::lore::locations::zones::*;
 use crate::util::{instruction::*, print};
 
@@ -6,12 +6,11 @@ impl Character {
     pub fn go(&mut self, instruction: Instruction) -> Position {
         let mut axes: Vec<i32> = Vec::new();
         let mut do_move: bool = false;
-        let mut local_world: PassageMap = PassageMap::new();
+        let entities = instruction.entity_map;
 
-        if let InstructionKind::MoveInstruct { go, world, x, y, z } = instruction.body {
+        if let InstructionKind::MoveInstruct { go, x, y, z } = instruction.body {
             axes.extend_from_slice(&[x, y, z]);
             do_move = go;
-            local_world = *world;
         };
 
         if do_move
@@ -35,10 +34,10 @@ impl Character {
             self.sense(Instruction {
                 body: InstructionKind::SenseInstruct {
                     sense: true,
-                    world: Box::new(local_world),
-                    position: Some(self.position),
+                    position: Box::new(Some(self.position)),
                 },
                 kind: "sense".to_string(),
+                entity_map: entities,
             });
         }
         self.position
@@ -47,20 +46,19 @@ impl Character {
     pub fn enter_passage(&mut self, instruction: Instruction) {
         let mut local_enter: bool = false;
         let mut local_key: String = String::new();
-        let mut local_map: PassageMap = PassageMap::new();
+        let local_entities = instruction.entity_map;
 
-        if let InstructionKind::EnterPassageInstruct { enter, key, map } = instruction.body {
+        if let InstructionKind::EnterPassageInstruct { enter, key } = instruction.body {
             local_enter = enter;
             local_key = key;
-            local_map = map;
         }
 
         if local_enter {
-            let passage_search = local_map.get(&self.position);
+            let passage_search = local_entities.get(&self.position);
             let mut passages = Vec::new();
 
             if let Some(found) = passage_search {
-                passages = found.to_vec();
+                passages = found.passages.entities.clone()
             }
 
             let destination_search = passages.iter().find(|&s| s.key == local_key);
@@ -83,25 +81,18 @@ impl Character {
         }
     }
 
-    pub fn sense(&self, instruction: Instruction) -> Vec<Entity> {
-        let mut sensed_entities: Vec<Entity> = Vec::new();
+    pub fn sense(&self, instruction: Instruction) -> EntityCollection {
+        let mut sensed_entities: EntityCollection = EntityCollection::new();
 
         let mut local_sense: bool = false;
 
-        // TODO should actually be the collection of several entity maps
-        let mut local_world: PassageMap = PassageMap::new();
+        let local_entities = instruction.entity_map;
         let mut local_position = self.position;
 
-        if let InstructionKind::SenseInstruct {
-            sense,
-            world,
-            position,
-        } = instruction.body
-        {
+        if let InstructionKind::SenseInstruct { sense, position } = instruction.body {
             local_sense = sense;
-            local_world = *world;
 
-            if let Some(position) = position {
+            if let Some(position) = *position {
                 local_position = position;
             }
         }
@@ -109,21 +100,26 @@ impl Character {
         if local_sense {
             let mut present_passages: Vec<Passage> = Vec::new();
 
-            if let Some(passages) = local_world.get(&local_position) {
-                present_passages = passages.to_vec();
+            if let Some(found) = local_entities.get(&local_position) {
+                present_passages.extend(found.passages.entities.clone());
             }
 
             // TODO senses everything present, add conditions instead
-            let sensed_passages = present_passages;
+            let mut sensed_passages = present_passages;
 
             if !sensed_passages.is_empty() {
-                sensed_entities.push(Entity::PassageEntity(sensed_passages.to_vec()));
+                sensed_entities
+                    .passages
+                    .entities
+                    .append(&mut sensed_passages);
             }
 
             // output message
             let mut msg: String;
 
-            if sensed_entities.is_empty() {
+            // TODO currently only checks for passages
+            // TODO struct itself could have an is_empty method
+            if sensed_entities.passages.entities.is_empty() {
                 msg = "You couldn't sense anything here.".to_string();
             } else if sensed_passages.len() == 1 {
                 msg = "You sense a passage here: ".to_string();
@@ -173,6 +169,7 @@ impl Character {
     }
 }
 
+#[derive(Clone)]
 pub struct Character {
     pub name: Box<str>,
     pub title: Box<str>,
@@ -187,16 +184,13 @@ pub struct Character {
     pub position: Position,
 }
 
-pub enum Entity {
-    PassageEntity(Vec<Passage>),
-    CharacterEntity(Vec<Character>),
-}
-
+#[derive(Clone)]
 pub struct HP {
     pub current: i32,
     pub max: i32,
 }
 
+#[derive(Clone)]
 pub struct MP {
     pub current: i32,
     pub max: i32,
