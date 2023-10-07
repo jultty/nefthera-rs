@@ -1,6 +1,7 @@
 use crate::base::space::{entity::*, passage::Passage, units::Position};
 use crate::lore::locations::zones::*;
 use crate::util::{instruction::*, print};
+use crate::base::description::Description;
 
 impl Character {
     pub fn go(&mut self, instruction: Instruction) -> Position {
@@ -98,14 +99,21 @@ impl Character {
 
         if do_sense {
             let mut present_passages: Vec<Passage> = Vec::new();
+            let mut present_descriptions: Vec<Description> = Vec::new();
+            let mut present_characters: Vec<Character> = Vec::new();
 
             if let Some(found) = entities.get(&local_position) {
                 present_passages.extend(found.passages.entities.clone());
+                present_descriptions.extend(found.descriptions.entities.clone());
+                present_characters.extend(found.characters.entities.clone());
             }
 
             // TODO senses everything present, add conditions instead
             let mut sensed_passages = present_passages;
+            let mut sensed_descriptions = present_descriptions;
+            let mut sensed_characters = present_characters;
 
+            // TODO refactor for redundancy
             if !sensed_passages.is_empty() {
                 sensed_entities
                     .passages
@@ -113,13 +121,26 @@ impl Character {
                     .append(&mut sensed_passages);
             }
 
+            if !sensed_descriptions.is_empty() {
+                sensed_entities
+                    .descriptions
+                    .entities
+                    .append(&mut sensed_descriptions);
+            }
+
+            if !sensed_characters.is_empty() {
+                sensed_entities
+                    .characters
+                    .entities
+                    .append(&mut sensed_characters);
+            }
+
             // output message
             let mut msg: String;
 
-            // TODO currently only checks for passages
-            // TODO struct itself could have an is_empty method
+            // TODO refactor for redundancy
             if sensed_entities.passages.entities.is_empty() {
-                msg = "You couldn't sense anything here.".to_string();
+                msg = "You couldn't sense passages here.".to_string();
             } else if sensed_entities.passages.entities.len() == 1 {
                 msg = "You sense a passage here: ".to_string();
 
@@ -128,14 +149,49 @@ impl Character {
             } else if sensed_entities.passages.entities.len() > 1 {
                 msg = "You sense passages here: ".to_string();
 
-                for p in sensed_passages {
+                for p in &sensed_entities.passages.entities {
                     msg.push_str(p.name);
                     msg.push(' ');
                 }
             } else {
-                msg = "You sense something unknown in this place.".to_string();
+                panic!("Unexpected passage sensing");
             }
             print(&msg, true);
+
+            if sensed_entities.descriptions.entities.is_empty() {
+                msg = "Nothing to see here.".to_string();
+            } else if sensed_entities.descriptions.entities.len() == 1 {
+                msg = sensed_entities.descriptions.entities[0].get().to_string();
+            } else if sensed_entities.descriptions.entities.len() > 1 {
+
+                // TODO add paging logic
+                for d in &sensed_entities.descriptions.entities {
+                    msg.push_str(d.get());
+                    msg.push('\n');
+                }
+            } else {
+                panic!("Unexpected description sensing");
+            }
+            print(&msg, true);
+
+            if sensed_entities.characters.entities.is_empty() {
+                msg = "Nobody is here.".to_string();
+            } else if sensed_entities.characters.entities.len() == 1 {
+                msg = sensed_entities.characters.entities[0].name.to_string();
+                msg.push_str(" is here.");
+            } else if sensed_entities.characters.entities.len() > 1 {
+
+                for c in &sensed_entities.characters.entities {
+                    msg.push_str(&c.name.to_string());
+                    msg.push_str(", ");
+                }
+                msg.push_str("are here.");
+
+            } else {
+                panic!("Unexpected character sensing");
+            }
+            print(&msg, true);
+
         }
         sensed_entities
     }
