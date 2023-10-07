@@ -44,16 +44,16 @@ impl Character {
     }
 
     pub fn enter_passage(&mut self, instruction: Instruction) {
-        let mut local_enter: bool = false;
+        let mut do_enter: bool = false;
         let mut local_key: String = String::new();
         let local_entities = instruction.entity_map;
 
         if let InstructionKind::EnterPassageInstruct { enter, key } = instruction.body {
-            local_enter = enter;
+            do_enter = enter;
             local_key = key;
         }
 
-        if local_enter {
+        if do_enter {
             let passage_search = local_entities.get(&self.position);
             let mut passages = Vec::new();
 
@@ -82,22 +82,21 @@ impl Character {
     }
 
     pub fn sense(&self, instruction: Instruction) -> EntityCollection {
-        let mut sensed_entities = EntityCollection::new();
 
-        let mut local_sense: bool = false;
-
+        let mut do_sense: bool = false;
         let entities = instruction.entity_map;
+        let mut sensed_entities = EntityCollection::new();
         let mut local_position = self.position;
 
         if let InstructionKind::SenseInstruct { sense, position } = instruction.body {
-            local_sense = sense;
+            do_sense = sense;
 
             if let Some(position) = *position {
                 local_position = position;
             }
         }
 
-        if local_sense {
+        if do_sense {
             let mut present_passages: Vec<Passage> = Vec::new();
 
             if let Some(found) = entities.get(&local_position) {
