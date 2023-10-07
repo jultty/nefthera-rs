@@ -1,7 +1,7 @@
 use nefthera::base::character::Character;
 use nefthera::base::space::entity::EntityMap;
 use nefthera::demo;
-use nefthera::util::{logger::*, parser::*, print};
+use nefthera::util::{instruction, logger::*, parser::*, print};
 
 fn main() -> Result<(), String> {
     let mut player: Character;
@@ -13,6 +13,9 @@ fn main() -> Result<(), String> {
         player = demo::get_demo_character();
         entities = demo::get_entity_map();
         log("Demo character loaded:", Some(&player.name), &log_opts);
+        player.go(instruction::Instruction::new_move_instruction(
+            true, 0, -49, 0, &entities,
+        ));
     } else {
         player = Character::new_blank();
         entities = EntityMap::new();

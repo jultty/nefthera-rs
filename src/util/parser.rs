@@ -5,10 +5,7 @@ use crate::util::logger::log;
 use crate::util::logger::LoggerOptions;
 use std::env;
 
-pub fn parse_input<'a>(
-    input: &'a str,
-    entity_map: &'a EntityMap,
-) -> Result<Instruction<'a>, String> {
+pub fn parse_input<'a>(input: &'a str, entities: &'a EntityMap) -> Result<Instruction<'a>, String> {
     let log_opts = LoggerOptions { debug: false };
 
     match input.split_whitespace().next() {
@@ -22,7 +19,7 @@ pub fn parse_input<'a>(
                 v[1].parse().unwrap(),
                 v[2].parse().unwrap(),
                 v[3].parse().unwrap(),
-                entity_map,
+                entities,
             ))
         }
         Some("passage") => {
@@ -31,16 +28,16 @@ pub fn parse_input<'a>(
             Ok(Instruction::new_enter_passage_instruction(
                 true,
                 v[1..v.len()].join(" "),
-                entity_map,
+                entities,
             ))
         }
         Some("sense") => {
             log("Action triggered: sense", None, &log_opts);
-            Ok(Instruction::new_sense_instruction(true, None, entity_map))
+            Ok(Instruction::new_sense_instruction(true, None, entities))
         }
         Some("quit" | "exit") => {
             log("Action triggered: quit", None, &log_opts);
-            Ok(Instruction::new_quit_instruction(true, entity_map))
+            Ok(Instruction::new_quit_instruction(true, entities))
         }
         _ => {
             log("Unknown command:", Some(input), &log_opts);

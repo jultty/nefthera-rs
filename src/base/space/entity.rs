@@ -2,6 +2,7 @@ use super::units::Position;
 use crate::base::character::Character;
 use crate::base::description::Description;
 use crate::base::space::passage::Passage;
+use crate::lore::locations::passages;
 use std::collections::HashMap;
 
 pub type EntityMap = HashMap<Position, EntityCollection>;
@@ -27,6 +28,26 @@ impl EntityCollection {
             },
         }
     }
+}
+
+pub fn new_populated() -> EntityMap {
+    let mut map = EntityMap::new();
+    let all_passages = passages::get_vector();
+
+    all_passages.into_iter().for_each(|p| {
+        let origin = p.get_origin().unwrap();
+
+        match map.get_mut(&origin) {
+            Some(collection) => collection.passages.entities.push(p),
+            None => {
+                let mut collection = EntityCollection::new();
+                collection.passages.entities.push(p);
+                map.insert(origin, collection);
+            }
+        };
+    });
+
+    map
 }
 
 impl Default for EntityCollection {

@@ -1,5 +1,5 @@
 use crate::base::character::*;
-use crate::base::space::entity::EntityMap;
+use crate::base::space::entity::{new_populated, EntityMap};
 use crate::lore::characters::ian::ian;
 
 pub fn get_demo_character() -> Character {
@@ -7,5 +7,5 @@ pub fn get_demo_character() -> Character {
 }
 
 pub fn get_entity_map() -> EntityMap {
-    EntityMap::new()
+    new_populated()
 }

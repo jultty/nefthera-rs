@@ -82,11 +82,11 @@ impl Character {
     }
 
     pub fn sense(&self, instruction: Instruction) -> EntityCollection {
-        let mut sensed_entities: EntityCollection = EntityCollection::new();
+        let mut sensed_entities = EntityCollection::new();
 
         let mut local_sense: bool = false;
 
-        let local_entities = instruction.entity_map;
+        let entities = instruction.entity_map;
         let mut local_position = self.position;
 
         if let InstructionKind::SenseInstruct { sense, position } = instruction.body {
@@ -100,7 +100,7 @@ impl Character {
         if local_sense {
             let mut present_passages: Vec<Passage> = Vec::new();
 
-            if let Some(found) = local_entities.get(&local_position) {
+            if let Some(found) = entities.get(&local_position) {
                 present_passages.extend(found.passages.entities.clone());
             }
 
@@ -121,12 +121,12 @@ impl Character {
             // TODO struct itself could have an is_empty method
             if sensed_entities.passages.entities.is_empty() {
                 msg = "You couldn't sense anything here.".to_string();
-            } else if sensed_passages.len() == 1 {
+            } else if sensed_entities.passages.entities.len() == 1 {
                 msg = "You sense a passage here: ".to_string();
 
-                msg.push_str(sensed_passages[0].name);
+                msg.push_str(sensed_entities.passages.entities[0].name);
                 msg.push(' ');
-            } else if sensed_passages.len() > 1 {
+            } else if sensed_entities.passages.entities.len() > 1 {
                 msg = "You sense passages here: ".to_string();
 
                 for p in sensed_passages {
