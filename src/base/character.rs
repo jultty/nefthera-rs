@@ -1,7 +1,7 @@
+use crate::base::description::Description;
 use crate::base::space::{entity::*, passage::Passage, units::Position};
 use crate::lore::locations::zones::*;
 use crate::util::{instruction::*, print};
-use crate::base::description::Description;
 
 impl Character {
     pub fn go(&mut self, instruction: Instruction) -> Position {
@@ -83,7 +83,6 @@ impl Character {
     }
 
     pub fn sense(&self, instruction: Instruction) -> EntityCollection {
-
         let mut do_sense: bool = false;
         let entities = instruction.entity_map;
         let mut sensed_entities = EntityCollection::new();
@@ -163,7 +162,6 @@ impl Character {
             } else if sensed_entities.descriptions.entities.len() == 1 {
                 msg = sensed_entities.descriptions.entities[0].get().to_string();
             } else if sensed_entities.descriptions.entities.len() > 1 {
-
                 // TODO add paging logic
                 for d in &sensed_entities.descriptions.entities {
                     msg.push_str(d.get());
@@ -180,18 +178,46 @@ impl Character {
                 msg = sensed_entities.characters.entities[0].name.to_string();
                 msg.push_str(" is here.");
             } else if sensed_entities.characters.entities.len() > 1 {
-
                 for c in &sensed_entities.characters.entities {
                     msg.push_str(&c.name.to_string());
                     msg.push_str(", ");
                 }
                 msg.push_str("are here.");
-
             } else {
                 panic!("Unexpected character sensing");
             }
             print(&msg, true);
 
+            if sensed_entities.descriptions.entities.is_empty() {
+                msg = "Nothing to see here.".to_string();
+            } else if sensed_entities.descriptions.entities.len() == 1 {
+                msg = sensed_entities.descriptions.entities[0].get().to_string();
+            } else if sensed_entities.descriptions.entities.len() > 1 {
+                // TODO add paging logic
+                for d in &sensed_entities.descriptions.entities {
+                    msg.push_str(d.get());
+                    msg.push('\n');
+                }
+            } else {
+                panic!("Unexpected description sensing");
+            }
+            print(&msg, true);
+
+            if sensed_entities.characters.entities.is_empty() {
+                msg = "Nobody is here.".to_string();
+            } else if sensed_entities.characters.entities.len() == 1 {
+                msg = sensed_entities.characters.entities[0].name.to_string();
+                msg.push_str(" is here.");
+            } else if sensed_entities.characters.entities.len() > 1 {
+                for c in &sensed_entities.characters.entities {
+                    msg.push_str(&c.name.to_string());
+                    msg.push_str(", ");
+                }
+                msg.push_str("are here.");
+            } else {
+                panic!("Unexpected character sensing");
+            }
+            print(&msg, true);
         }
         sensed_entities
     }
