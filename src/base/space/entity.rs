@@ -2,6 +2,8 @@ use super::units::Position;
 use crate::base::character::Character;
 use crate::base::description::Description;
 use crate::base::space::passage::Passage;
+use crate::lore::characters;
+use crate::lore::descriptions;
 use crate::lore::locations::passages;
 use std::collections::HashMap;
 
@@ -33,6 +35,8 @@ impl EntityCollection {
 pub fn new_populated() -> EntityMap {
     let mut map = EntityMap::new();
     let all_passages = passages::get_vector();
+    let all_characters = characters::get_vector();
+    let all_descriptions = descriptions::get_vector();
 
     all_passages.into_iter().for_each(|p| {
         let origin = p.get_origin().unwrap();
@@ -43,6 +47,32 @@ pub fn new_populated() -> EntityMap {
                 let mut collection = EntityCollection::new();
                 collection.passages.entities.push(p);
                 map.insert(origin, collection);
+            }
+        };
+    });
+
+    all_characters.into_iter().for_each(|c| {
+        let position = c.position;
+
+        match map.get_mut(&position) {
+            Some(collection) => collection.characters.entities.push(c),
+            None => {
+                let mut collection = EntityCollection::new();
+                collection.characters.entities.push(c);
+                map.insert(position, collection);
+            }
+        };
+    });
+
+    all_descriptions.into_iter().for_each(|d| {
+        let position = d.0;
+
+        match map.get_mut(&position) {
+            Some(collection) => collection.descriptions.entities.push(d.1),
+            None => {
+                let mut collection = EntityCollection::new();
+                collection.descriptions.entities.push(d.1);
+                map.insert(position, collection);
             }
         };
     });

@@ -9,7 +9,7 @@ pub fn instantiate() -> Area {
         name: "Ibonhaun Laboratory",
         key: "OPPOS-OUTSKIRTS_IBONHAUN-LABORATORY",
         zone: oppos_outskirts::instantiate(),
-        description: Description::instantiate("A small cabin in the woods, found after following a barely visible path that strays from the main road to the larger Ibonhaun Academy, leading through the Oppos Woods to a clearing where the original laboratory of Alexander Ibonhaun still could be reached."),
+        description: Description::new("A small cabin in the woods, found after following a barely visible path that strays from the main road to the larger Ibonhaun Academy, leading through the Oppos Woods to a clearing where the original laboratory of Alexander Ibonhaun still could be reached."),
         limits: SpaceLimits {
             min_x: -11000,
             max_x: -10000,

@@ -8,7 +8,7 @@ pub fn instantiate() -> Area {
         name: "Temple of Catherine",
         key: "ONNEHERA_TEMPLE-OF-CATHERINE",
         zone: onnehera::instantiate(),
-        description: Description::instantiate("Not added yet"),
+        description: Description::new("Dedicated to the Goddess of the Night, the temple received very few visitors during the day."),
         limits: SpaceLimits {
             min_x: 0,
             max_x: 0,

@@ -10,7 +10,9 @@ pub fn instantiate() -> Area {
         name: "Oppos Woods",
         key: "OPPOS-OUTSKIRTS_OPPOS-WOODS",
         zone: oppos_outskirts::instantiate(),
-        description: Description::instantiate("Not added yet"),
+        description: Description::new(
+            "The Oppos Woods were a mixture of expansive fields and areas covered by trees.",
+        ),
         limits: SpaceLimits {
             min_x: -11000,
             max_x: -10000,

@@ -139,7 +139,7 @@ impl Character {
 
             // TODO refactor for redundancy
             if sensed_entities.passages.entities.is_empty() {
-                msg = "You couldn't sense passages here.".to_string();
+                msg = "".to_string();
             } else if sensed_entities.passages.entities.len() == 1 {
                 msg = "You sense a passage here: ".to_string();
 
@@ -155,10 +155,31 @@ impl Character {
             } else {
                 panic!("Unexpected passage sensing");
             }
-            print(&msg, true);
+            if msg != *"" {
+                print(&msg, true)
+            };
+
+            if sensed_entities.characters.entities.is_empty() {
+                msg = "".to_string();
+            } else if sensed_entities.characters.entities.len() == 1 {
+                msg = sensed_entities.characters.entities[0].name.to_string();
+                msg.push_str(" is here.");
+            } else if sensed_entities.characters.entities.len() > 1 {
+                msg = "".to_string();
+                for c in &sensed_entities.characters.entities {
+                    msg.push_str(c.name.as_ref());
+                    msg.push_str(", ");
+                }
+                msg.push_str("are here.");
+            } else {
+                panic!("Unexpected character sensing");
+            }
+            if msg != *"" {
+                print(&msg, true)
+            };
 
             if sensed_entities.descriptions.entities.is_empty() {
-                msg = "Nothing to see here.".to_string();
+                msg = "".to_string();
             } else if sensed_entities.descriptions.entities.len() == 1 {
                 msg = sensed_entities.descriptions.entities[0].get().to_string();
             } else if sensed_entities.descriptions.entities.len() > 1 {
@@ -170,54 +191,9 @@ impl Character {
             } else {
                 panic!("Unexpected description sensing");
             }
-            print(&msg, true);
-
-            if sensed_entities.characters.entities.is_empty() {
-                msg = "Nobody is here.".to_string();
-            } else if sensed_entities.characters.entities.len() == 1 {
-                msg = sensed_entities.characters.entities[0].name.to_string();
-                msg.push_str(" is here.");
-            } else if sensed_entities.characters.entities.len() > 1 {
-                for c in &sensed_entities.characters.entities {
-                    msg.push_str(&c.name.to_string());
-                    msg.push_str(", ");
-                }
-                msg.push_str("are here.");
-            } else {
-                panic!("Unexpected character sensing");
-            }
-            print(&msg, true);
-
-            if sensed_entities.descriptions.entities.is_empty() {
-                msg = "Nothing to see here.".to_string();
-            } else if sensed_entities.descriptions.entities.len() == 1 {
-                msg = sensed_entities.descriptions.entities[0].get().to_string();
-            } else if sensed_entities.descriptions.entities.len() > 1 {
-                // TODO add paging logic
-                for d in &sensed_entities.descriptions.entities {
-                    msg.push_str(d.get());
-                    msg.push('\n');
-                }
-            } else {
-                panic!("Unexpected description sensing");
-            }
-            print(&msg, true);
-
-            if sensed_entities.characters.entities.is_empty() {
-                msg = "Nobody is here.".to_string();
-            } else if sensed_entities.characters.entities.len() == 1 {
-                msg = sensed_entities.characters.entities[0].name.to_string();
-                msg.push_str(" is here.");
-            } else if sensed_entities.characters.entities.len() > 1 {
-                for c in &sensed_entities.characters.entities {
-                    msg.push_str(&c.name.to_string());
-                    msg.push_str(", ");
-                }
-                msg.push_str("are here.");
-            } else {
-                panic!("Unexpected character sensing");
-            }
-            print(&msg, true);
+            if msg != *"" {
+                print(&msg, true)
+            };
         }
         sensed_entities
     }

@@ -40,6 +40,40 @@ fn ibonhaun_out_passage_can_be_sensed() {
 }
 
 #[test]
+fn alexander_ibonhauns_table_can_be_found_in_his_lab() {
+    let mut ian = demo::get_demo_character();
+    let entities = demo::get_entity_map().clone();
+
+    ian.go(Instruction::new_move_instruction(
+        true, 0, 450, 0, &entities,
+    ));
+    let sensed_entities = ian.sense(Instruction::new_sense_instruction(
+        true,
+        Some(ian.position),
+        &entities,
+    ));
+    assert_eq!(
+        sensed_entities.descriptions.entities[0].get(),
+        "A table on this spot had its surface all scratched from working with sharp tools.",
+    );
+}
+#[test]
+fn alexander_ibonhaun_can_be_sensed_in_his_lab() {
+    let ian = demo::get_demo_character();
+    let entities = demo::get_entity_map().clone();
+
+    let sensed_entities = ian.sense(Instruction::new_sense_instruction(
+        true,
+        Some(ian.position),
+        &entities,
+    ));
+    assert_eq!(
+        sensed_entities.characters.entities[0].name,
+        "Alexander Ibonhaun".into(),
+    );
+}
+
+#[test]
 fn exactly_one_passage_can_be_sensed_at_ibonhaun_out() {
     let mut ian = demo::get_demo_character();
     let entities = demo::get_entity_map().clone();
